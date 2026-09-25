@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Dotnet10Server</RootNamespace>
+    <AssemblyName>dotnet11-server</AssemblyName>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <PublishAot Condition="'$(PublishAot)' == ''">false</PublishAot>
+    <DefineConstants>$(DefineConstants);NET11_SERVER</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PublishAot)' == 'true'">
+    <OptimizationPreference>Speed</OptimizationPreference>
+    <DefineConstants>$(DefineConstants);NATIVE_AOT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../dotnet10-server/*.cs" Link="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

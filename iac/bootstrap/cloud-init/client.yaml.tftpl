@@ -1,0 +1,90 @@
+#cloud-config
+package_update: true
+packages:
+  - openssh-server
+  - curl
+  - ca-certificates
+  - gpg
+  - jq
+  - openssl
+  - iproute2
+
+write_files:
+  - path: /opt/wtt/bootstrap/node/configure-linux-ssh.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(configure_ssh_script), "\n", "\n      ")}
+
+  - path: /usr/local/share/ca-certificates/wtt-run-ca.crt
+    permissions: "0644"
+    content: |
+      ${replace(trimspace(ca_pem), "\n", "\n      ")}
+
+  - path: /etc/wtt/bootstrap.env
+    permissions: "0644"
+    content: |
+      LOAD_BALANCER_IP=${lb_ip}
+      DNS_ZONE=${dns_zone}
+      AZURE_KEY_VAULT_NAME=${key_vault_name}
+      AZURE_ACR_LOGIN_SERVER=${acr_login_server}
+      WTT_CLIENT_SOURCE_IP_COUNT=${client_source_ip_count}
+
+  - path: /opt/wtt/bootstrap/cloud/get-identity-token.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_identity_token_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/get-secret.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_secret_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/node/configure-client.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(configure_client_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/node/configure-client-source-ips.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(configure_client_source_ips_script), "\n", "\n      ")}
+
+  - path: /etc/systemd/system/wtt-client-source-ips.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Configure Azure secondary source IPs for WTT client benchmarks
+      Wants=network-online.target
+      After=network-online.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/opt/wtt/bootstrap/node/configure-client-source-ips.sh
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+
+  - path: /opt/wtt/bootstrap/k6/bench-entry.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(run_benchmark_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/k6/bench-runner.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(bench_run_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/k6/bench-publish.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(bench_publish_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/k6/main.js
+    permissions: "0644"
+    content: |
+      ${replace(trimspace(k6_main_script), "\n", "\n      ")}
+
+runcmd:
+  - ["/opt/wtt/bootstrap/node/configure-linux-ssh.sh", "${admin_username}"]
+  - /opt/wtt/bootstrap/node/configure-client.sh

@@ -1,0 +1,251 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "analyze.fullname" . }}
+  labels:
+{{ include "analyze.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+{{ include "analyze.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+{{ include "analyze.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        fsGroup: 472
+        fsGroupChangePolicy: OnRootMismatch
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | nindent 8 }}
+      nodeSelector:
+{{ toYaml .Values.scheduling.nodeSelector | nindent 8 }}
+      tolerations:
+{{ toYaml .Values.scheduling.tolerations | nindent 8 }}
+      # The InfluxDB restartable init container is a native Kubernetes sidecar.
+      # It is started before the importer and remains available to Grafana.
+      initContainers:
+        - name: influxdb
+          image: {{ .Values.influxdb.image | quote }}
+          imagePullPolicy: {{ .Values.influxdb.imagePullPolicy }}
+          restartPolicy: Always
+          ports:
+            - name: influxdb
+              containerPort: 8086
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "analyze.fullname" . }}-settings
+          env:
+            - name: DOCKER_INFLUXDB_INIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: influx-admin-user
+            - name: DOCKER_INFLUXDB_INIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: influx-admin-password
+            - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: influx-token
+          startupProbe:
+            httpGet:
+              path: /health
+              port: influxdb
+            failureThreshold: 60
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: influxdb
+            periodSeconds: 10
+          volumeMounts:
+            - name: influxdb-data
+              mountPath: /var/lib/influxdb2
+            - name: influxdb-config
+              mountPath: /etc/influxdb2
+        - name: importer
+          image: {{ .Values.importer.image | quote }}
+          imagePullPolicy: {{ .Values.importer.imagePullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+          command:
+            - /bin/sh
+            - -c
+            - >-
+              set -eu;
+              oras_version=1.3.0;
+              apk add --no-cache bash curl python3 py3-pip;
+              pip install --break-system-packages --root-user-action=ignore --no-cache-dir influxdb-client==1.50.0;
+              curl -fsSL -o /tmp/oras.tar.gz
+              "https://github.com/oras-project/oras/releases/download/v$${oras_version}/oras_$${oras_version}_linux_amd64.tar.gz";
+              tar -xzf /tmp/oras.tar.gz -C /usr/local/bin oras;
+              rm /tmp/oras.tar.gz;
+              exec /bin/bash /scripts/import-results.sh
+          args:
+{{- if .Values.importer.source.resultsDir }}
+            - --results-dir
+            - /results
+{{- else }}
+{{- range $_, $artifact := .Values.importer.source.artifacts }}
+            - --artifact-image
+            - {{ $artifact | quote }}
+{{- end }}
+{{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "analyze.fullname" . }}-settings
+          env:
+            - name: INFLUX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: influx-token
+            - name: GF_RENDERING_SERVER_URL
+              value: http://127.0.0.1:8081/render
+            - name: GF_RENDERING_CALLBACK_URL
+              value: http://127.0.0.1:3000/
+            - name: IMPORT_SKIP_WARMUP
+              value: {{ ternary "true" "false" .Values.importer.skipWarmup | quote }}
+{{- if .Values.importer.source.artifacts }}
+            - name: ORAS_REGISTRY_CONFIG
+              value: /auth/auth.json
+{{- end }}
+          volumeMounts:
+            - name: importer-script
+              mountPath: /scripts
+              readOnly: true
+            - name: importer-workspace
+              mountPath: /workspace
+{{- if .Values.importer.source.resultsDir }}
+            - name: import-source
+              mountPath: /results
+              readOnly: true
+{{- end }}
+{{- if .Values.importer.source.artifacts }}
+            - name: importer-registry-auth
+              mountPath: /auth
+              readOnly: true
+{{- end }}
+      containers:
+        - name: grafana
+          image: {{ .Values.grafana.image | quote }}
+          imagePullPolicy: {{ .Values.grafana.imagePullPolicy }}
+          ports:
+            - name: grafana
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "analyze.fullname" . }}-settings
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: grafana-admin-user
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: grafana-admin-password
+            - name: GF_DATAPROXY_TIMEOUT
+              value: {{ .Values.grafana.queryTimeoutSeconds | quote }}
+            - name: GF_DATAPROXY_MAX_CONNS_PER_HOST
+              value: {{ .Values.grafana.maxConnsPerHost | quote }}
+            - name: INFLUX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.credentials.existingSecret }}
+                  key: influx-token
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: grafana
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: grafana
+            periodSeconds: 10
+          volumeMounts:
+            - name: grafana-data
+              mountPath: /var/lib/grafana
+            - name: grafana-datasource
+              mountPath: /etc/grafana/provisioning/datasources
+              readOnly: true
+            - name: grafana-dashboard-provider
+              mountPath: /etc/grafana/provisioning/dashboards
+              readOnly: true
+            - name: grafana-dashboard
+              mountPath: /var/lib/grafana/dashboards
+              readOnly: true
+        - name: renderer
+          image: {{ .Values.grafana.renderer.image | quote }}
+          imagePullPolicy: {{ .Values.grafana.renderer.imagePullPolicy }}
+          ports:
+            - name: renderer
+              containerPort: 8081
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: renderer
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: renderer
+            periodSeconds: 10
+      volumes:
+        - name: influxdb-data
+          hostPath:
+            path: {{ .Values.persistence.influxdbDataPath | quote }}
+            type: DirectoryOrCreate
+        - name: influxdb-config
+          hostPath:
+            path: {{ .Values.persistence.influxdbConfigPath | quote }}
+            type: DirectoryOrCreate
+        - name: grafana-data
+          hostPath:
+            path: {{ .Values.persistence.grafanaDataPath | quote }}
+            type: DirectoryOrCreate
+        - name: grafana-datasource
+          configMap:
+            name: {{ include "analyze.fullname" . }}-grafana-datasource
+        - name: grafana-dashboard-provider
+          configMap:
+            name: {{ include "analyze.fullname" . }}-grafana-dashboard-provider
+        - name: grafana-dashboard
+          configMap:
+            name: {{ include "analyze.fullname" . }}-grafana-dashboard
+        - name: importer-workspace
+          emptyDir: {}
+        - name: importer-script
+          configMap:
+            name: {{ include "analyze.fullname" . }}-importer
+            defaultMode: 0555
+{{- if .Values.importer.source.resultsDir }}
+        - name: import-source
+          hostPath:
+            path: {{ .Values.importer.source.resultsDir | quote }}
+            type: Directory
+{{- end }}
+{{- if .Values.importer.source.artifacts }}
+        - name: importer-registry-auth
+          secret:
+            secretName: {{ (index .Values.imagePullSecrets 0).name | quote }}
+            items:
+              - key: .dockerconfigjson
+                path: auth.json
+{{- end }}

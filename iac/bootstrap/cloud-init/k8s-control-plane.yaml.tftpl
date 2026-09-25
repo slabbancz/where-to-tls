@@ -1,0 +1,130 @@
+#cloud-config
+package_update: true
+packages:
+%{ if ssh_enabled }
+  - openssh-server
+%{ endif }
+  - curl
+  - jq
+  - apt-transport-https
+  - ca-certificates
+  - gpg
+
+write_files:
+  - path: /etc/modules-load.d/k8s.conf
+    permissions: "0644"
+    content: |
+      overlay
+      br_netfilter
+
+  - path: /etc/sysctl.d/k8s.conf
+    permissions: "0644"
+    content: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.ipv4.ip_forward = 1
+
+  - path: /etc/wtt/bootstrap.env
+    permissions: "0600"
+    content: |
+      ADMIN_USERNAME=${admin_username}
+      SSH_ENABLED=${ssh_enabled}
+      POD_CIDR=${pod_cidr}
+      KUBERNETES_VERSION=${k8s_version}
+      KUBERNETES_REPOSITORY_VERSION=${k8s_repo_version}
+      INSTALL_KUBECTL=true
+      CONTROL_PLANE_STATE_DEVICE=/dev/disk/azure/scsi1/lun0
+      EXTERNAL_API_IP=${cp_public_ip}
+      EXTERNAL_API_PORT=${cp_nat_port}
+      AZURE_KEY_VAULT_NAME=${key_vault_name}
+      AZURE_SUBSCRIPTION_ID=${subscription_id}
+      AZURE_TENANT_ID=${tenant_id}
+      AZURE_RESOURCE_GROUP=${resource_group_name}
+      AZURE_LOCATION=${location}
+      AZURE_VNET_NAME=${vnet_name}
+      AZURE_SUBNET_NAME=${subnet_nodes_name}
+      AZURE_SECURITY_GROUP_NAME=${security_group_name}
+      AZURE_ZONE=${zone}
+
+  - path: /opt/wtt/bootstrap/patches/corednsdeployment+strategic.yaml
+    permissions: "0644"
+    content: |
+      spec:
+        template:
+          spec:
+            nodeSelector:
+              wtt/pool: cp
+            tolerations:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+                effect: NoSchedule
+              - key: node.cloudprovider.kubernetes.io/uninitialized
+                operator: Exists
+                effect: NoSchedule
+
+  - path: /opt/wtt/bootstrap/k8s/configure-os.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(configure_os_script), "\n", "\n      ")}
+
+%{ if ssh_enabled }
+  - path: /opt/wtt/bootstrap/node/configure-linux-ssh.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(configure_ssh_script), "\n", "\n      ")}
+%{ endif }
+
+  - path: /opt/wtt/bootstrap/k8s/install-containerd.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(install_containerd_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/k8s/install-kubernetes.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(install_kubernetes_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/k8s/init-control-plane.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(init_control_plane_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/k8s/mount-control-plane-state.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(mount_control_plane_state_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/get-identity-token.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_identity_token_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/get-provider-id.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_provider_id_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/publish-secret.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(publish_secret_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/get-secret.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_secret_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/configure-cloud-provider.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(write_cloud_provider_config_script), "\n", "\n      ")}
+
+%{ if post_bootstrap_script != "" }
+  - path: /opt/wtt/bootstrap/post-bootstrap.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(post_bootstrap_script), "\n", "\n      ")}
+%{ endif }
+
+runcmd:
+  - /opt/wtt/bootstrap/k8s/init-control-plane.sh

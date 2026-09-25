@@ -1,0 +1,59 @@
+nameOverride: ""
+fullnameOverride: ""
+
+files:
+  influxdb: ""
+  dashboard: ""
+  liveDashboardJson: ""
+  comparisonDashboardJson: ""
+  comparisonAcrossProfilesDashboardJson: ""
+  comparisonRunTimelineDashboardJson: ""
+  comparisonRunTimelineAcrossProfileRunsDashboardJson: ""
+  runCatalogDashboardJson: ""
+  importerScript: ""
+  importerPython: ""
+
+imagePullSecrets:
+  - name: acr-pull-secret
+
+credentials:
+  existingSecret: wtt-analyze-credentials
+
+influxdb:
+  image: docker.io/library/influxdb:2.9.1
+  imagePullPolicy: IfNotPresent
+  org: where-to-tls
+  bucket: k6
+
+grafana:
+  image: docker.io/grafana/grafana:12.4.3
+  imagePullPolicy: IfNotPresent
+  queryTimeoutSeconds: 120
+  maxConnsPerHost: 4
+  renderer:
+    image: docker.io/grafana/grafana-image-renderer:v4.1.5
+    imagePullPolicy: IfNotPresent
+
+importer:
+  image: docker.io/library/alpine:3.21.3
+  imagePullPolicy: IfNotPresent
+  # Exclude raw k6 points tagged warmup=true from this import.
+  skipWarmup: false
+  source:
+    # A control-plane host directory mounted read-only at /results.
+    # Set this to "" and list OCI result artifact references below instead.
+    resultsDir: /var/lib/wtt-control-plane/analyze/import
+    artifacts: []
+
+scheduling:
+  nodeSelector:
+    wtt/pool: cp
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+persistence:
+  influxdbDataPath: /var/lib/wtt-control-plane/analyze/influxdb-data
+  influxdbConfigPath: /var/lib/wtt-control-plane/analyze/influxdb-config
+  grafanaDataPath: /var/lib/wtt-control-plane/analyze/grafana-data

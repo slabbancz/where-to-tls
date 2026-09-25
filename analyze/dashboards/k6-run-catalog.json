@@ -1,0 +1,365 @@
+{
+  "uid": "wtt-run-catalog",
+  "title": "Where to TLS - Run catalog",
+  "description": "Filter imported benchmark Run IDs and copy inputs for the SVG exporter.",
+  "tags": [
+    "k6",
+    "where-to-tls",
+    "catalog",
+    "TLS"
+  ],
+  "timezone": "utc",
+  "schemaVersion": 41,
+  "version": 6,
+  "editable": true,
+  "graphTooltip": 1,
+  "refresh": "",
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "templating": {
+    "list": [
+      {
+        "name": "wtt_run_name",
+        "label": "Run name",
+        "type": "query",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb-k6"
+        },
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_run_name\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_run_name\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1
+      },
+      {
+        "name": "wtt_run_id",
+        "label": "Run ID",
+        "type": "query",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb-k6"
+        },
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_run_id\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_run_id\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1
+      },
+      {
+        "name": "wtt_scenario",
+        "label": "Scenario",
+        "type": "query",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb-k6"
+        },
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_scenario\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_scenario\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1
+      },
+      {
+        "name": "wtt_stack",
+        "label": "Stack",
+        "type": "query",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb-k6"
+        },
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_stack\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_stack\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1
+      },
+      {
+        "name": "wtt_profile",
+        "label": "Workload profile",
+        "type": "query",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb-k6"
+        },
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_profile\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.tagValues(\n  bucket: v.defaultBucket,\n  tag: \"wtt_profile\",\n  predicate: (r) => r._measurement == \"wtt_k6_summary\" and r.warmup == \"false\",\n  start: -365d,\n)\n",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1
+      },
+      {
+        "name": "tls_version",
+        "label": "TLS version",
+        "type": "custom",
+        "query": "1.2,1.3,none",
+        "options": [
+          {
+            "selected": false,
+            "text": "1.2",
+            "value": "1.2"
+          },
+          {
+            "selected": false,
+            "text": "1.3",
+            "value": "1.3"
+          },
+          {
+            "selected": false,
+            "text": "none",
+            "value": "none"
+          }
+        ],
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "multi": false,
+        "includeAll": true,
+        "allValue": ".*"
+      },
+      {
+        "name": "tls_group",
+        "label": "TLS group",
+        "type": "custom",
+        "query": "P-256,X25519,none,unverified",
+        "options": [
+          {
+            "selected": false,
+            "text": "P-256",
+            "value": "P-256"
+          },
+          {
+            "selected": false,
+            "text": "X25519",
+            "value": "X25519"
+          },
+          {
+            "selected": false,
+            "text": "none",
+            "value": "none"
+          },
+          {
+            "selected": false,
+            "text": "unverified",
+            "value": "unverified"
+          }
+        ],
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "multi": false,
+        "includeAll": true,
+        "allValue": ".*"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Run catalog",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 16
+      },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-k6"
+      },
+      "description": "One row per Run ID, newest first. All filtered Run IDs are shown in one scrollable table. The separate command panel includes the same filtered Run IDs.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true,
+            "minWidth": 90
+          },
+          "noValue": "-"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Run ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 430
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Workloads / profiles"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 360
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "cellHeight": "md",
+        "showHeader": true,
+        "sortBy": [],
+        "footer": {
+          "show": false
+        },
+        "enablePagination": false
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-k6"
+          },
+          "query": "import \"strings\"\n\nfrom(bucket: v.defaultBucket)\n  |> range(start: -365d)\n  |> filter(fn: (r) =>\n    r._measurement == \"wtt_k6_summary\" and\n    r.warmup == \"false\" and\n    (r._field == \"tls_version\" or\n      r._field == \"key_exchange_group\" or\n      r._field == \"key_exchange_group_source\")\n  )\n  |> filter(fn: (r) =>\n    r.wtt_run_id =~ /^${wtt_run_id:regex}$/ and\n    r.wtt_scenario =~ /^${wtt_scenario:regex}$/ and\n    r.wtt_stack =~ /^${wtt_stack:regex}$/ and\n    r.wtt_profile =~ /^${wtt_profile:regex}$/\n  )\n  |> map(fn: (r) => ({r with\n    wtt_run_name:\n      if exists r.wtt_run_name then r.wtt_run_name else \"-\"\n  }))\n  |> filter(fn: (r) => r.wtt_run_name =~ /^${wtt_run_name:regex}$/)\n  |> pivot(\n    rowKey: [\n      \"_time\", \"wtt_run_id\", \"wtt_run_name\", \"wtt_scenario\", \"wtt_stack\",\n      \"wtt_profile\", \"wtt_execution_index\", \"cell\",\n    ],\n    columnKey: [\"_field\"],\n    valueColumn: \"_value\",\n  )\n  |> map(fn: (r) => ({r with\n    tls_version_filter: if exists r.tls_version then r.tls_version else \"-\",\n    tls_group_filter:\n      if exists r.key_exchange_group_source and\n        r.key_exchange_group_source == \"openssl-preflight\"\n      then r.key_exchange_group\n      else if exists r.key_exchange_group_source and\n        r.key_exchange_group_source == \"not-applicable\"\n      then \"none\"\n      else \"unverified\",\n  }))\n  |> filter(fn: (r) =>\n    r.tls_version_filter =~ /^${tls_version:regex}$/ and\n    r.tls_group_filter =~ /^${tls_group:regex}$/\n  )\n\n  |> group(columns: [\"wtt_run_id\"])\n  |> sort(columns: [\"_time\", \"cell\"])\n  |> limit(n: 1)\n  |> group()\n  |> sort(columns: [\"_time\"], desc: true)\n  |> map(fn: (r) => ({\n    Timestamp: string(v: r._time),\n    RunName: if exists r.wtt_run_name then r.wtt_run_name else \"-\",\n    RunID: r.wtt_run_id,\n    Scenario: r.wtt_scenario,\n    Stack: r.wtt_stack,\n    Workloads:\n      if strings.containsStr(v: r.wtt_run_id, substr: \"-blog_tls_baseline-\")\n      then \"Baseline: Linear, Flat, Sine\"\n      else if strings.containsStr(v: r.wtt_run_id, substr: \"-blog_tls_linear_peak-\")\n      then \"High-pressure linear: Fixed 100 VUs, Expandable to 1,000 VUs\"\n      else if strings.containsStr(v: r.wtt_run_id, substr: \"-blog_tls_race-\")\n      then \"Race: 10, 100, 1,000 VUs\"\n      else r.wtt_profile,\n    TLS: r.tls_version_filter,\n    TLSGroup: r.tls_group_filter,\n  }))\n",
+          "queryType": "flux"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Timestamp": 0,
+              "RunName": 1,
+              "RunID": 2,
+              "Scenario": 3,
+              "Stack": 4,
+              "Workloads": 5,
+              "TLS": 6,
+              "TLSGroup": 7
+            },
+            "renameByName": {
+              "RunName": "Run name",
+              "RunID": "Run ID",
+              "Workloads": "Workloads / profiles",
+              "TLSGroup": "TLS group"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Export all filtered Run IDs",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 24,
+        "h": 5
+      },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-k6"
+      },
+      "description": "Copy the Command cell. It joins every distinct Run ID matching the active filters and ignores the catalog page.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true,
+            "minWidth": 90
+          },
+          "noValue": "-"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Command"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1500
+              },
+              {
+                "id": "custom.wrapText",
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "cellHeight": "lg",
+        "maxRowHeight": 600,
+        "showHeader": true,
+        "sortBy": [],
+        "footer": {
+          "show": false
+        },
+        "enablePagination": false
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-k6"
+          },
+          "query": "from(bucket: v.defaultBucket)\n  |> range(start: -365d)\n  |> filter(fn: (r) =>\n    r._measurement == \"wtt_k6_summary\" and\n    r.warmup == \"false\" and\n    (r._field == \"tls_version\" or\n      r._field == \"key_exchange_group\" or\n      r._field == \"key_exchange_group_source\")\n  )\n  |> filter(fn: (r) =>\n    r.wtt_run_id =~ /^${wtt_run_id:regex}$/ and\n    r.wtt_scenario =~ /^${wtt_scenario:regex}$/ and\n    r.wtt_stack =~ /^${wtt_stack:regex}$/ and\n    r.wtt_profile =~ /^${wtt_profile:regex}$/\n  )\n  |> map(fn: (r) => ({r with\n    wtt_run_name:\n      if exists r.wtt_run_name then r.wtt_run_name else \"-\"\n  }))\n  |> filter(fn: (r) => r.wtt_run_name =~ /^${wtt_run_name:regex}$/)\n  |> pivot(\n    rowKey: [\n      \"_time\", \"wtt_run_id\", \"wtt_run_name\", \"wtt_scenario\", \"wtt_stack\",\n      \"wtt_profile\", \"wtt_execution_index\", \"cell\",\n    ],\n    columnKey: [\"_field\"],\n    valueColumn: \"_value\",\n  )\n  |> map(fn: (r) => ({r with\n    tls_version_filter: if exists r.tls_version then r.tls_version else \"-\",\n    tls_group_filter:\n      if exists r.key_exchange_group_source and\n        r.key_exchange_group_source == \"openssl-preflight\"\n      then r.key_exchange_group\n      else if exists r.key_exchange_group_source and\n        r.key_exchange_group_source == \"not-applicable\"\n      then \"none\"\n      else \"unverified\",\n  }))\n  |> filter(fn: (r) =>\n    r.tls_version_filter =~ /^${tls_version:regex}$/ and\n    r.tls_group_filter =~ /^${tls_group:regex}$/\n  )\n\n  |> group(columns: [\"wtt_run_id\"])\n  |> sort(columns: [\"_time\", \"cell\"])\n  |> limit(n: 1)\n  |> group()\n  |> sort(columns: [\"wtt_run_id\"])\n  |> reduce(\n    identity: {\n      Command: \"python3 analyze/exporting/export-tls-result-svgs.py\",\n      Runs: 0,\n    },\n    fn: (r, accumulator) => ({\n      Command: accumulator.Command + \" \\\\\\n  --run-ids \" +\n        \"wttperfacrkhmsb6.azurecr.io/wtt/benchmark-results:\" + r.wtt_run_id,\n      Runs: accumulator.Runs + 1,\n    }),\n  )\n",
+          "queryType": "flux"
+        }
+      ],
+      "transformations": []
+    }
+  ]
+}

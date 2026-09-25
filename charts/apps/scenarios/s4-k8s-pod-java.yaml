@@ -1,0 +1,19 @@
+routing:
+  mode: direct
+  gatewayClass: ""
+  listenerPort: 8443
+  backendPort: 8443
+  certificateSecretName: ""
+  tlsVersion: "1.2"
+workload-go:
+  enabled: false
+workload-net:
+  enabled: false
+workload-java:
+  enabled: true
+  labels:
+    scenario: s4-k8s-pod-java
+    tls: pod
+  config:
+    tls:
+      enabled: true

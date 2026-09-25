@@ -1,0 +1,39 @@
+runName: Blog TLS baseline
+k6:
+  options:
+    quiet: true
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: false
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["1.1"]
+  tlsResumption: [false]
+  connectionReuse: [false]
+  profiles:
+    - name: linear
+      start: 100
+      end: 3000
+      sampling: 10
+      windowSeconds: 60
+      preAllocatedVUs: 100
+      maxVUs: 1000
+    - name: flat
+      rate: 1000
+      windowSeconds: 60
+      preAllocatedVUs: 100
+      maxVUs: 1000
+    - name: sine
+      amplitude: 1250 # 0 - 2500 RPS
+      offset:  1250
+      cycles: 2
+      sampling: 10
+      windowSeconds: 60
+      preAllocatedVUs: 100
+      maxVUs: 1000
+  warmupSeconds: 0
+  repeats: 3

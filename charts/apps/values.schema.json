@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["global", "routing", "workload-go", "workload-net", "workload-java", "workload-rust"],
+  "additionalProperties": false,
+  "properties": {
+    "workloadDefaults": {
+      "type": "object",
+      "description": "Shared YAML anchor definition merged into each workload before Helm applies overrides."
+    },
+    "global": {
+      "type": "object",
+      "required": ["image"],
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "type": "object",
+          "required": ["registry", "tag", "pullPolicy"],
+          "additionalProperties": false,
+          "properties": {
+            "registry": {"type": "string", "minLength": 1},
+            "tag": {"type": "string", "minLength": 1, "not": {"const": "latest"}},
+            "pullPolicy": {"type": "string", "enum": ["Always", "IfNotPresent", "Never"]}
+          }
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": ["mode", "gatewayClass", "listenerPort", "backendPort", "certificateSecretName", "tlsVersion", "backendTLS"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"type": "string", "enum": ["direct", "passthrough", "terminate"]},
+        "gatewayClass": {"type": "string"},
+        "listenerPort": {"type": "integer", "const": 8443},
+        "backendPort": {"type": "integer", "enum": [8080, 8443]},
+        "certificateSecretName": {"type": "string"},
+        "tlsVersion": {"type": "string", "enum": ["1.2", "1.3"]},
+        "tlsGroup": {"type": "string", "enum": ["P-256", "X25519"]},
+        "backendTLS": {
+          "type": "object",
+          "required": ["enabled", "caConfigMapName"],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "caConfigMapName": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "workload-go": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": true,
+      "properties": {"enabled": {"type": "boolean"}}
+    },
+    "workload-net": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": true,
+      "properties": {"enabled": {"type": "boolean"}}
+    },
+    "workload-java": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": true,
+      "properties": {"enabled": {"type": "boolean"}}
+    },
+    "workload-rust": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": true,
+      "properties": {"enabled": {"type": "boolean"}}
+    }
+  },
+  "oneOf": [
+    {"properties": {"workload-go": {"properties": {"enabled": {"const": true}}}, "workload-net": {"properties": {"enabled": {"const": false}}}, "workload-java": {"properties": {"enabled": {"const": false}}}, "workload-rust": {"properties": {"enabled": {"const": false}}}}},
+    {"properties": {"workload-go": {"properties": {"enabled": {"const": false}}}, "workload-net": {"properties": {"enabled": {"const": true}}}, "workload-java": {"properties": {"enabled": {"const": false}}}, "workload-rust": {"properties": {"enabled": {"const": false}}}}},
+    {"properties": {"workload-go": {"properties": {"enabled": {"const": false}}}, "workload-net": {"properties": {"enabled": {"const": false}}}, "workload-java": {"properties": {"enabled": {"const": true}}}, "workload-rust": {"properties": {"enabled": {"const": false}}}}},
+    {"properties": {"workload-go": {"properties": {"enabled": {"const": false}}}, "workload-net": {"properties": {"enabled": {"const": false}}}, "workload-java": {"properties": {"enabled": {"const": false}}}, "workload-rust": {"properties": {"enabled": {"const": true}}}}}
+  ]
+}

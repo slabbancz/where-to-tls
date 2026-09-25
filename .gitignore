@@ -1,0 +1,86 @@
+# --- Terraform / OpenTofu: state is LOCAL and must never be committed ---
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+*.tfvars
+*.tfvars.json
+!example.tfvars
+!*.example.tfvars
+
+# --- Secrets / certs / keys ---
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+tls.keys
+secrets/
+.env
+.env.*
+!.env.example
+!*.env.example
+analyze/podman/auth.json
+
+# --- SSH keys generated for the run ---
+id_rsa*
+*.pub
+
+# --- Benchmark results ---
+results/**
+!results/.gitkeep
+
+# --- Vendored Helm charts are committed UNPACKED on purpose: offline install
+#     with no 'helm repo add', and readable/reviewable templates in-tree.
+#     Archives are a build artifact of fetch-charts.sh and are not kept. ---
+charts/vendor/cilium/
+charts/vendor/cloud-provider-azure/
+charts/vendor/gateway-api-experimental/
+charts/vendor/kube-prometheus-stack/
+charts/vendor/pyroscope/
+charts/vendor/traefik/
+charts/vendor/*.tgz
+charts/apps/charts/*.tgz
+
+# --- Build artifacts ---
+bin/
+obj/
+out/
+dist/
+blog/public/
+blog/.hugo_build.lock
+*.exe
+*.dll
+!charts/**/*.dll
+src/go-server/go-server
+src/java-netty-server/target/
+src/rust-server/target/
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+
+# --- Editor / OS ---
+.local/
+.agents/
+.vscode/
+.idea/
+.DS_Store
+*.swp

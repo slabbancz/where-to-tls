@@ -1,0 +1,17 @@
+{{- $routing := .Values.routing -}}
+{{- if eq $routing.mode "terminate" }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}-httproute
+  labels:
+{{ include "apps.routingLabels" . | indent 4 }}
+spec:
+  parentRefs:
+    - name: {{ .Release.Name }}-gateway
+      sectionName: https-terminate
+  rules:
+    - backendRefs:
+        - name: {{ .Release.Name }}
+          port: {{ $routing.backendPort }}
+{{- end }}

@@ -1,0 +1,252 @@
+# Offline Pyroscope profile for diagnostic benchmark runs.
+# The backend runs on the control plane; Alloy profiles only workload
+# containers discovered in the wtt namespace.
+
+pyroscope:
+  fullnameOverride: wtt-pyroscope
+  disableSelfProfile: true
+  extraArgs:
+    log.level: info
+  nodeSelector:
+    wtt/pool: cp
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  persistence:
+    enabled: true
+    existingClaim: wtt-pyroscope-data
+  initContainers:
+    - name: prepare-profile-storage
+      image: busybox:1.37.0
+      imagePullPolicy: IfNotPresent
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          mkdir -p /data/.metastore
+          chown 10001:10001 /data /data/.metastore
+          chmod 0750 /data /data/.metastore
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  resources:
+    requests:
+      cpu: 500m
+      memory: 256Mi
+
+architecture:
+  storage:
+    v1: false
+    v2: true
+  microservices:
+    enabled: false
+
+alloy:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: grafana/alloy
+    tag: v1.19.2
+  crds:
+    create: false
+  controller:
+    type: daemonset
+    hostPID: true
+    nodeSelector:
+      wtt/pool: workload
+    volumes:
+      extra:
+        - name: alloy-storage
+          hostPath:
+            path: /var/lib/wtt/alloy
+            type: DirectoryOrCreate
+  alloy:
+    stabilityLevel: public-preview
+    storagePath: /var/lib/alloy
+    mounts:
+      extra:
+        - name: alloy-storage
+          mountPath: /var/lib/alloy
+    clustering:
+      enabled: false
+    securityContext:
+      privileged: true
+      runAsUser: 0
+      runAsGroup: 0
+    resources:
+      requests:
+        cpu: 200m
+        memory: 128Mi
+    configMap:
+      create: true
+      content: |
+        logging {
+          level  = "info"
+          format = "logfmt"
+        }
+
+        discovery.kubernetes "wtt_pods" {
+          role = "pod"
+
+          namespaces {
+            names = ["wtt"]
+          }
+
+          selectors {
+            role  = "pod"
+            field = "spec.nodeName=" + sys.env("HOSTNAME")
+          }
+        }
+
+        discovery.relabel "wtt_workloads" {
+          targets = discovery.kubernetes.wtt_pods.targets
+
+          rule {
+            action        = "keep"
+            source_labels = ["__meta_kubernetes_pod_phase"]
+            regex         = "Running"
+          }
+
+          rule {
+            action        = "keep"
+            source_labels = ["__meta_kubernetes_pod_container_name"]
+            regex         = "server"
+          }
+
+          rule {
+            action        = "keep"
+            source_labels = ["__meta_kubernetes_pod_container_port_name"]
+            regex         = "https"
+          }
+
+          rule {
+            action = "labelmap"
+            regex  = "__meta_kubernetes_pod_label_(.+)"
+          }
+
+          rule {
+            action        = "replace"
+            source_labels = ["__meta_kubernetes_namespace"]
+            target_label  = "namespace"
+          }
+
+          rule {
+            action        = "replace"
+            source_labels = ["__meta_kubernetes_pod_name"]
+            target_label  = "pod"
+          }
+
+          rule {
+            action        = "replace"
+            source_labels = ["__meta_kubernetes_pod_container_name"]
+            target_label  = "container"
+          }
+
+          rule {
+            action        = "replace"
+            source_labels = ["__meta_kubernetes_pod_label_wtt_stack"]
+            regex         = "(.+)"
+            replacement   = "wtt-$1"
+            target_label  = "service_name"
+          }
+        }
+
+        pyroscope.ebpf "wtt" {
+          targets     = discovery.relabel.wtt_workloads.output
+          forward_to  = [pyroscope.write.local.receiver]
+          off_cpu_threshold = 1
+          dotnet_enabled = true
+          go_enabled     = true
+          hotspot_enabled = true
+          python_enabled  = false
+          ruby_enabled    = false
+          php_enabled     = false
+          perl_enabled    = false
+          v8_enabled      = false
+        }
+
+        pyroscope.write "local" {
+          endpoint {
+            url = "http://wtt-pyroscope:4040"
+          }
+        }
+  rbac:
+    create: true
+    namespaces:
+      - wtt
+    rules:
+      - apiGroups:
+          - ""
+        resources:
+          - pods
+        verbs:
+          - get
+          - list
+          - watch
+    clusterRules: []
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: wtt-monitoring
+
+agent:
+  enabled: false
+
+minio:
+  enabled: false
+
+extraObjects:
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: 'wtt-pyroscope-{{ .Release.Namespace }}-data'
+      annotations:
+        helm.sh/resource-policy: keep
+    spec:
+      capacity:
+        storage: 10Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: ""
+      claimRef:
+        namespace: '{{ .Release.Namespace }}'
+        name: wtt-pyroscope-data
+      hostPath:
+        path: /var/lib/wtt/pyroscope
+        type: DirectoryOrCreate
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: wtt/pool
+                  operator: In
+                  values:
+                    - cp
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: wtt-pyroscope-data
+      namespace: '{{ .Release.Namespace }}'
+      annotations:
+        helm.sh/resource-policy: keep
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: ""
+      volumeName: 'wtt-pyroscope-{{ .Release.Namespace }}-data'
+      resources:
+        requests:
+          storage: 10Gi
+
+serviceMonitor:
+  enabled: true
+  labels:
+    release: wtt-monitoring

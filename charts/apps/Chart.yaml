@@ -1,0 +1,26 @@
+apiVersion: v2
+name: apps
+description: Single-scenario operator chart for Where-To-TLS Kubernetes workloads
+type: application
+version: 0.1.0
+dependencies:
+  - name: workload
+    alias: workload-go
+    version: 0.1.0
+    repository: "file://charts/workload"
+    condition: workload-go.enabled
+  - name: workload
+    alias: workload-net
+    version: 0.1.0
+    repository: "file://charts/workload"
+    condition: workload-net.enabled
+  - name: workload
+    alias: workload-java
+    version: 0.1.0
+    repository: "file://charts/workload"
+    condition: workload-java.enabled
+  - name: workload
+    alias: workload-rust
+    version: 0.1.0
+    repository: "file://charts/workload"
+    condition: workload-rust.enabled

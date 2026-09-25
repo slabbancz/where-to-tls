@@ -1,0 +1,16 @@
+routing:
+  mode: terminate
+  gatewayClass: traefik
+  backendPort: 8443
+  certificateSecretName: wtt-tls-secret
+workload-rust:
+  enabled: true
+  labels:
+    scenario: s6-traefik-terminate-rust
+    tls: traefik
+  service:
+    type: ClusterIP
+  config:
+    tls:
+      enabled: true
+      resumption: true

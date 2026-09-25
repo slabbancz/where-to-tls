@@ -1,0 +1,46 @@
+runName: HTTP1 TLS low load
+k6:
+  options:
+    quiet: false
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: true
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["1.1"]
+  tlsResumption: [false] # Do not reuse TLS session, measure a full handshake each time.
+  connectionReuse: [false] # Measure a full TLS handshake for each HTTP request.
+  profiles:
+    - name: flat
+      rate: 500
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 50000
+    - name: sine
+      amplitude: 1450 # 100 - 3000 RPS
+      offset:  1550
+      cycles: 2
+      sampling: 100
+      windowSeconds: 180
+      preAllocatedVUs: 200
+      maxVUs: 50000
+    - name: linear
+      start: 50
+      end: 1000
+      sampling: 100
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 50000
+    - name: exponential
+      start: 50
+      end: 1000
+      sampling: 100
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 50000
+  warmupSeconds: 0
+  repeats: 1

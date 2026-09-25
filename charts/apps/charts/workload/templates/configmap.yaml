@@ -1,0 +1,23 @@
+{{- if .Values.enabled }}
+{{- include "workload.validate" . -}}
+{{- $config := dict "plaintextPort" .Values.config.plaintextPort "tls" (dict "enabled" .Values.config.tls.enabled) "payload" .Values.config.payload "timeouts" .Values.config.timeouts -}}
+{{- if .Values.config.tls.enabled -}}
+{{- $_ := set $config.tls "port" .Values.config.tls.port -}}
+{{- $_ := set $config.tls "version" .Values.config.tls.version -}}
+{{- $_ := set $config.tls "group" .Values.config.tls.group -}}
+{{- if eq .Values.labels.stack "java-netty" -}}
+{{- $_ := set $config.tls "provider" .Values.config.tls.provider -}}
+{{- end -}}
+{{- $_ := set $config.tls "certFile" .Values.tls.certFile -}}
+{{- $_ := set $config.tls "keyFile" .Values.tls.keyFile -}}
+{{- $_ := set $config.tls "resumption" .Values.config.tls.resumption -}}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "workload.name" . }}-config
+  labels:
+{{ include "workload.labels" . | indent 4 }}
+data:
+  config.json: {{ $config | toPrettyJson | quote }}
+{{- end }}

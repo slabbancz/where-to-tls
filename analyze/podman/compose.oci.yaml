@@ -1,0 +1,12 @@
+services:
+  importer:
+    environment:
+      IMPORT_RESULTS_DIR: ""
+      IMPORT_ARTIFACT_DIR: ""
+      IMPORT_ARTIFACT_IMAGE: ${IMPORT_ARTIFACT_IMAGE:-}
+      IMPORT_ARTIFACT_IMAGES: ${IMPORT_ARTIFACT_IMAGES:-}
+      ORAS_REGISTRY_CONFIG: /auth/auth.json
+    volumes:
+      # Podman cannot mount a generic OCI artifact as an image volume; ORAS
+      # reads the auth file and pulls the artifact into the importer workspace.
+      - ./auth.json:/auth/auth.json:ro,Z

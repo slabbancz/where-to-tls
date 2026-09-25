@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: where-to-tls
+    orgId: 1
+    folder: Where to TLS
+    folderUid: where-to-tls
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards

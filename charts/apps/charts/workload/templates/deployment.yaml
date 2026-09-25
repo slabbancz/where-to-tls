@@ -1,0 +1,98 @@
+{{- if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "workload.name" . }}
+  labels:
+{{ include "workload.labels" . | indent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+{{ include "workload.selectorLabels" . | indent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+{{ include "workload.labels" . | indent 8 }}
+    spec:
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      nodeSelector:
+{{ toYaml .Values.scheduling.nodeSelector | indent 8 }}
+      containers:
+        - name: server
+          image: "{{ .Values.global.image.registry | trimSuffix "/" }}/{{ .Values.image.repository }}:{{ .Values.global.image.tag }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          env:
+            - name: WTT_TLS_GROUP
+              value: {{ .Values.config.tls.group | quote }}
+          ports:
+            - name: https
+              containerPort: {{ .Values.service.tlsPort }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.service.plainPort }}
+              protocol: TCP
+{{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 5
+{{- else }}
+          startupProbe: null
+{{- end }}
+{{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+{{- else }}
+          # Explicit null clears an existing probe during upgrades.
+          livenessProbe: null
+{{- end }}
+{{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            failureThreshold: 3
+{{- else }}
+          readinessProbe: null
+{{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/wtt/config.json
+              subPath: config.json
+              readOnly: true
+{{- if .Values.config.tls.enabled }}
+            - name: tls-certs
+              mountPath: {{ .Values.tls.mountPath }}
+              readOnly: true
+{{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "workload.name" . }}-config
+{{- if .Values.config.tls.enabled }}
+        - name: tls-certs
+          secret:
+            secretName: {{ .Values.tls.secretName }}
+{{- end }}
+{{- end }}

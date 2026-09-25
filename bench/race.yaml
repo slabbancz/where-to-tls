@@ -1,0 +1,23 @@
+runName: Fixed concurrency race
+k6:
+  options:
+    quiet: false
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: true
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["2"]
+  tlsResumption: [false]
+  connectionReuse: [false]
+  profiles:
+    - name: race
+      iterations: 1000000
+      vus: 1000
+      maxDurationSeconds: 900
+  warmupSeconds: 0
+  repeats: 1

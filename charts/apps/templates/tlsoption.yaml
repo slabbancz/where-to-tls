@@ -1,0 +1,21 @@
+{{- $routing := .Values.routing -}}
+{{- if eq $routing.mode "terminate" }}
+apiVersion: traefik.io/v1alpha1
+kind: TLSOption
+metadata:
+  name: default
+  labels:
+{{ include "apps.routingLabels" . | indent 4 }}
+spec:
+  minVersion: {{ if eq $routing.tlsVersion "1.3" }}VersionTLS13{{ else }}VersionTLS12{{ end }}
+  maxVersion: {{ if eq $routing.tlsVersion "1.3" }}VersionTLS13{{ else }}VersionTLS12{{ end }}
+  cipherSuites:
+    {{- if eq $routing.tlsVersion "1.3" }}
+    - TLS_AES_128_GCM_SHA256
+    {{- else }}
+    - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+    {{- end }}
+  curvePreferences:
+    - {{ if eq $routing.tlsGroup "X25519" }}X25519{{ else }}CurveP256{{ end }}
+  sniStrict: false
+{{- end }}

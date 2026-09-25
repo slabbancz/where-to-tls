@@ -1,0 +1,1375 @@
+<mxfile host="app.diagrams.net" pages="7">
+  <diagram id="go-kernel" name="1 - Go full connection lifecycle">
+    <mxGraphModel dx="2120" dy="2610" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="2610">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" value="Go: SYN to TLS handshake to HTTP response to final kernel cleanup" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#999999;fontSize=24;spacing=12;align=left;">
+          <mxGeometry x="40" y="20" width="2040" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" value="HTTP/2 over TLS 1.2, not HTTP/1.1. Client: k6 / Go TLS in BOTH runs. OSI: HTTP is L7, TCP is L4; TLS sits above TCP (often mapped to L5/L6), not separate implemented OSI session/presentation stacks.&lt;br&gt;Solid numbered messages = decoded capture evidence. Dashed messages = protocol expansion / source-based interpretation, NOT recorded syscalls or exact packet segmentation. Time runs downward; spacing is not elapsed time." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="85" width="2040" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" value="CLIENT HTTP - L7&lt;br&gt;k6 / Go HTTP transport" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="35" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" value="CLIENT TLS&lt;br&gt;Go crypto/tls" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="335" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" value="CLIENT TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="635" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" value="AZURE LB - L4&lt;br&gt;Opaque forwarding / NAT" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="935" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" value="SERVER TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1235" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" value="SERVER TLS&lt;br&gt;Go crypto/tls" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1535" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" value="SERVER HTTP - L7&lt;br&gt;Go net/http" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1835" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="280" as="sourcePoint" />
+            <mxPoint x="160" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="280" as="sourcePoint" />
+            <mxPoint x="460" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="280" as="sourcePoint" />
+            <mxPoint x="760" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="280" as="sourcePoint" />
+            <mxPoint x="1060" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="15" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="280" as="sourcePoint" />
+            <mxPoint x="1360" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="16" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="280" as="sourcePoint" />
+            <mxPoint x="1660" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="280" as="sourcePoint" />
+            <mxPoint x="1960" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" parent="1" value="New request: allocate socket / connect()&lt;br&gt;select eligible local IP + ephemeral port" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="325" as="sourcePoint" />
+            <mxPoint x="760" y="325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" parent="1" value="TCP SYN: client SYN_SENT; server LISTEN -&gt; SYN_RECV" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="395" as="sourcePoint" />
+            <mxPoint x="1360" y="395" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" parent="1" value="TCP SYN/ACK: acknowledges client SYN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="465" as="sourcePoint" />
+            <mxPoint x="760" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" parent="1" value="TCP ACK: completes 3-way handshake; both ESTABLISHED" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="535" as="sourcePoint" />
+            <mxPoint x="1360" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" parent="1" value="TLS 1.2 ClientHello: supported suites, SNI, ALPN offers" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="605" as="sourcePoint" />
+            <mxPoint x="1660" y="605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" parent="1" value="ServerHello: TLS 1.2, selected ECDHE/ECDSA AES-GCM suite, ALPN h2" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="675" as="sourcePoint" />
+            <mxPoint x="460" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" parent="1" value="Certificate + signed ephemeral ServerKeyExchange + ServerHelloDone&lt;br&gt;full ECDHE handshake; logical messages, may share TCP segments" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="745" as="sourcePoint" />
+            <mxPoint x="460" y="745" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="25" parent="1" value="Verify server certificate / hostname&lt;br&gt;and key-exchange signature" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="330" y="790" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="1" value="ClientKeyExchange (ECDHE public key) + ChangeCipherSpec + encrypted Finished" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="885" as="sourcePoint" />
+            <mxPoint x="1660" y="885" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="27" parent="1" value="ChangeCipherSpec + encrypted Finished&lt;br&gt;both peers verify Finished; TLS ready" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="955" as="sourcePoint" />
+            <mxPoint x="460" y="955" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="28" parent="1" value="HTTP/2 connection preface + client SETTINGS (inside TLS records)" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1025" as="sourcePoint" />
+            <mxPoint x="1960" y="1025" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="29" parent="1" value="Server SETTINGS; SETTINGS acknowledgments in both directions&lt;br&gt;Logical exchange; may interleave with requests. Routine TCP ACKs omitted." edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1095" as="sourcePoint" />
+            <mxPoint x="160" y="1095" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" parent="1" value="HTTP/2 HEADERS: GET /payload?bytes=1024&lt;br&gt;encoded -&gt; TLS records -&gt; TCP stream" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1165" as="sourcePoint" />
+            <mxPoint x="1960" y="1165" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="31" parent="1" value="HTTP/2 response HEADERS + DATA; request succeeds&lt;br&gt;frames 210, 212" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1235" as="sourcePoint" />
+            <mxPoint x="160" y="1235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="32" parent="1" value="No connection reuse:&lt;br&gt;HTTP transport closes TLS connection" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1305" as="sourcePoint" />
+            <mxPoint x="460" y="1305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="33" parent="1" value="crypto/tls.Close():&lt;br&gt;write encrypted close_notify" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1375" as="sourcePoint" />
+            <mxPoint x="760" y="1375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="34" parent="1" value="Client TLS close_notify: 31 TCP payload bytes&lt;br&gt;frame 216" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1445" as="sourcePoint" />
+            <mxPoint x="1360" y="1445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="35" parent="1" value="Close underlying net.Conn&lt;br&gt;without waiting for peer TLS alert" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1515" as="sourcePoint" />
+            <mxPoint x="760" y="1515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="36" parent="1" value="Client FIN/ACK: FIN_WAIT_1; peer TCP enters CLOSE_WAIT&lt;br&gt;frame 219" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1585" as="sourcePoint" />
+            <mxPoint x="1360" y="1585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="37" parent="1" value="Deliver received TLS record bytes&lt;br&gt;TCP FIN separately ends byte stream" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1655" as="sourcePoint" />
+            <mxPoint x="1660" y="1655" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" parent="1" value="Decode close_notify -&gt; TLS read EOF&lt;br&gt;HTTP/2 connection cleanup" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1725" as="sourcePoint" />
+            <mxPoint x="1960" y="1725" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="39" parent="1" value="Deferred crypto/tls.Conn.Close()&lt;br&gt;attempt reciprocal TLS alert" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1795" as="sourcePoint" />
+            <mxPoint x="1660" y="1795" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="40" parent="1" value="Write encrypted close_notify&lt;br&gt;then close underlying net.Conn" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1865" as="sourcePoint" />
+            <mxPoint x="1360" y="1865" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="41" parent="1" value="Reciprocal TLS close_notify: 31 new TCP bytes; frame 278&lt;br&gt;ACK covers client FIN (FIN_WAIT_2 or transient full-socket close path)" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1935" as="sourcePoint" />
+            <mxPoint x="760" y="1935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="42" parent="1" value="Receive side already closed:&lt;br&gt;new payload can trigger Linux reset;&lt;br&gt;exact kernel branch not traced" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="1980" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="1" value="Client RST - frame 279, 12 microseconds after alert&lt;br&gt;abort rather than normal client TIME_WAIT" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#b85450;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2075" as="sourcePoint" />
+            <mxPoint x="1360" y="2075" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="44" parent="1" value="Server FIN/ACK - frame 281&lt;br&gt;in-flight close races with reset; FIN sequence follows the 31 alert bytes" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="2145" as="sourcePoint" />
+            <mxPoint x="760" y="2145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="45" parent="1" value="ANOTHER client RST - frame 282&lt;br&gt;late FIN does not receive a normal final ACK" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#b85450;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2215" as="sourcePoint" />
+            <mxPoint x="1360" y="2215" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="46" parent="1" value="Reset cleanup: no normal TIME_WAIT&lt;br&gt;for this stream; tuple becomes eligible&lt;br&gt;subject to normal allocation rules" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2260" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="1" value="Accepted reset aborts remaining TCP&lt;br&gt;state. CLOSED; no ACK of a RST.&lt;br&gt;Internal timing not captured." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="1230" y="2330" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="48" parent="1" value="Evidence and scope: docs/tls-exhaustion-go-vs-dotnet.md (Go stream 0 / .NET stream 1) and docs/tls-exhaustion-mechanism.md (pinned Go/.NET/Linux source links). Packet arrows cross the LB; it does not terminate TLS. TLS is userspace on these paths; the kernel interprets TCP bytes/sequence numbers, not HTTP or TLS alerts.&lt;br&gt;Handshake rows expand the full TLS 1.2 ECDHE protocol, not frame-by-frame capture timing. Optional branches and timer expiry are explanatory, not observed events for these exact streams. Reference Linux: v6.12; measured kernel: 7.0.0-1012-azure. Reset and normal-close populations coexist; these are representative paths, not universal runtime behavior." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="2445" width="2040" height="125" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="net-kernel" name="2 - .NET full connection lifecycle">
+    <mxGraphModel dx="2120" dy="2820" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="2820">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" value=".NET: SYN to TLS handshake to HTTP response to final kernel cleanup" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#999999;fontSize=24;spacing=12;align=left;">
+          <mxGeometry x="40" y="20" width="2040" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" value="HTTP/2 over TLS 1.2, not HTTP/1.1. Client: k6 / Go TLS in BOTH runs. OSI: HTTP is L7, TCP is L4; TLS sits above TCP (often mapped to L5/L6), not separate implemented OSI session/presentation stacks.&lt;br&gt;Solid numbered messages = decoded capture evidence. Dashed messages = protocol expansion / source-based interpretation, NOT recorded syscalls or exact packet segmentation. Time runs downward; spacing is not elapsed time." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="85" width="2040" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" value="CLIENT HTTP - L7&lt;br&gt;k6 / Go HTTP transport" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="35" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" value="CLIENT TLS&lt;br&gt;Go crypto/tls" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="335" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" value="CLIENT TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="635" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" value="AZURE LB - L4&lt;br&gt;Opaque forwarding / NAT" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="935" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" value="SERVER TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1235" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" value="SERVER TLS&lt;br&gt;SslStream / OpenSSL" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1535" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" value="SERVER HTTP - L7&lt;br&gt;Kestrel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1835" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="280" as="sourcePoint" />
+            <mxPoint x="160" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="280" as="sourcePoint" />
+            <mxPoint x="460" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="280" as="sourcePoint" />
+            <mxPoint x="760" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="280" as="sourcePoint" />
+            <mxPoint x="1060" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="15" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="280" as="sourcePoint" />
+            <mxPoint x="1360" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="16" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="280" as="sourcePoint" />
+            <mxPoint x="1660" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="280" as="sourcePoint" />
+            <mxPoint x="1960" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" parent="1" value="New request: allocate socket / connect()&lt;br&gt;select eligible local IP + ephemeral port" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="325" as="sourcePoint" />
+            <mxPoint x="760" y="325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" parent="1" value="TCP SYN: client SYN_SENT; server LISTEN -&gt; SYN_RECV" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="395" as="sourcePoint" />
+            <mxPoint x="1360" y="395" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" parent="1" value="TCP SYN/ACK: acknowledges client SYN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="465" as="sourcePoint" />
+            <mxPoint x="760" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" parent="1" value="TCP ACK: completes 3-way handshake; both ESTABLISHED" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="535" as="sourcePoint" />
+            <mxPoint x="1360" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" parent="1" value="TLS 1.2 ClientHello: supported suites, SNI, ALPN offers" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="605" as="sourcePoint" />
+            <mxPoint x="1660" y="605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" parent="1" value="ServerHello: TLS 1.2, selected ECDHE/ECDSA AES-GCM suite, ALPN h2" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="675" as="sourcePoint" />
+            <mxPoint x="460" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" parent="1" value="Certificate + signed ephemeral ServerKeyExchange + ServerHelloDone&lt;br&gt;full ECDHE handshake; logical messages, may share TCP segments" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="745" as="sourcePoint" />
+            <mxPoint x="460" y="745" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="25" parent="1" value="Verify server certificate / hostname&lt;br&gt;and key-exchange signature" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="330" y="790" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="1" value="ClientKeyExchange (ECDHE public key) + ChangeCipherSpec + encrypted Finished" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="885" as="sourcePoint" />
+            <mxPoint x="1660" y="885" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="27" parent="1" value="ChangeCipherSpec + encrypted Finished&lt;br&gt;both peers verify Finished; TLS ready" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="955" as="sourcePoint" />
+            <mxPoint x="460" y="955" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="28" parent="1" value="HTTP/2 connection preface + client SETTINGS (inside TLS records)" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1025" as="sourcePoint" />
+            <mxPoint x="1960" y="1025" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="29" parent="1" value="Server SETTINGS; SETTINGS acknowledgments in both directions&lt;br&gt;Logical exchange; may interleave with requests. Routine TCP ACKs omitted." edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1095" as="sourcePoint" />
+            <mxPoint x="160" y="1095" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" parent="1" value="HTTP/2 HEADERS: GET /payload?bytes=1024&lt;br&gt;encoded -&gt; TLS records -&gt; TCP stream" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1165" as="sourcePoint" />
+            <mxPoint x="1960" y="1165" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="31" parent="1" value="HTTP/2 response HEADERS + DATA; request succeeds&lt;br&gt;frame 1241" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1235" as="sourcePoint" />
+            <mxPoint x="160" y="1235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="32" parent="1" value="No connection reuse:&lt;br&gt;HTTP transport closes TLS connection" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1305" as="sourcePoint" />
+            <mxPoint x="460" y="1305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="33" parent="1" value="crypto/tls.Close():&lt;br&gt;write encrypted close_notify" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1375" as="sourcePoint" />
+            <mxPoint x="760" y="1375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="34" parent="1" value="Client TLS close_notify: 31 TCP payload bytes&lt;br&gt;frame 1258" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1445" as="sourcePoint" />
+            <mxPoint x="1360" y="1445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="35" parent="1" value="Close underlying net.Conn&lt;br&gt;without waiting for peer TLS alert" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1515" as="sourcePoint" />
+            <mxPoint x="760" y="1515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="36" parent="1" value="Client FIN/ACK: FIN_WAIT_1; peer TCP enters CLOSE_WAIT&lt;br&gt;frame 1260" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1585" as="sourcePoint" />
+            <mxPoint x="1360" y="1585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="37" parent="1" value="Deliver received TLS record bytes&lt;br&gt;TCP FIN separately ends byte stream" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1655" as="sourcePoint" />
+            <mxPoint x="1660" y="1655" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" parent="1" value="Decode close_notify -&gt; TLS read EOF&lt;br&gt;HTTP/2 connection cleanup" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1725" as="sourcePoint" />
+            <mxPoint x="1960" y="1725" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="39" parent="1" value="HTTPS cleanup disposes SslStream&lt;br&gt;ordinary quiet OpenSSL disposal" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1795" as="sourcePoint" />
+            <mxPoint x="1660" y="1795" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="40" parent="1" value="No reciprocal close_notify or GOAWAY&lt;br&gt;in this representative stream.&lt;br&gt;No explicit ShutdownAsync() exchange." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="1530" y="1840" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="1" value="Connection transport cleanup&lt;br&gt;closes TCP (schematic ownership)" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1935" as="sourcePoint" />
+            <mxPoint x="1360" y="1935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="42" parent="1" value="Server FIN/ACK - frame 1738; LAST_ACK; zero payload&lt;br&gt;ACK covers client FIN; FIN seq 3374924439 matches client's next expected byte" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="2005" as="sourcePoint" />
+            <mxPoint x="760" y="2005" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="43" parent="1" value="Accept ACK + FIN: FIN_WAIT_1 -&gt;&lt;br&gt;TIME_WAIT; FIN_WAIT_2 need not&lt;br&gt;be a separately observable state" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2050" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="44" parent="1" value="Final ACK - frame 1739; ACK 3374924440 = FIN sequence + 1&lt;br&gt;server can leave LAST_ACK -&gt; CLOSED" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2145" as="sourcePoint" />
+            <mxPoint x="1360" y="2145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="45" parent="1" value="TIME_WAIT: kernel keeps tuple /&lt;br&gt;sequence state, not an HTTP request.&lt;br&gt;No notification to application." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2190" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="46" parent="1" value="CLOSED: normal server socket cleanup.&lt;br&gt;No further TLS messages.&lt;br&gt;No ACK of the final ACK." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="1230" y="2260" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="1" value="OPTIONAL, not observed here: retransmitted FIN if final ACK was lost&lt;br&gt;(server would still be LAST_ACK)" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="2355" as="sourcePoint" />
+            <mxPoint x="760" y="2355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="48" parent="1" value="OPTIONAL: TIME_WAIT responds with ACK again;&lt;br&gt;matching FIN can restart retention timer" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2425" as="sourcePoint" />
+            <mxPoint x="1360" y="2425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="49" parent="1" value="Normal no-new-traffic case:&lt;br&gt;TIME_WAIT timer expires (~60 s in&lt;br&gt;reference Linux); remove tuple state" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2470" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="50" parent="1" value="CLOSED: tuple eligible for a new dial.&lt;br&gt;No FIN / RST / TLS alert at expiry.&lt;br&gt;New request must start with SYN." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2540" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="1" value="Evidence and scope: docs/tls-exhaustion-go-vs-dotnet.md (Go stream 0 / .NET stream 1) and docs/tls-exhaustion-mechanism.md (pinned Go/.NET/Linux source links). Packet arrows cross the LB; it does not terminate TLS. TLS is userspace on these paths; the kernel interprets TCP bytes/sequence numbers, not HTTP or TLS alerts.&lt;br&gt;Handshake rows expand the full TLS 1.2 ECDHE protocol, not frame-by-frame capture timing. Optional branches and timer expiry are explanatory, not observed events for these exact streams. Reference Linux: v6.12; measured kernel: 7.0.0-1012-azure. Reset and normal-close populations coexist; these are representative paths, not universal runtime behavior." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="2655" width="2040" height="125" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="exhaustion-kernel" name="3 - NET source-port exhaustion">
+    <mxGraphModel dx="1280" dy="1050" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1280" pageHeight="1050">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value=".NET at scale: retained client TIME_WAIT state makes the next connect() fail locally" style="text;html=1;whiteSpace=wrap;align=left;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="25" width="1200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sub" value="Observed 2,000 RPS fresh-connection diagnostic. This is client tuple exhaustion, not malformed traffic: a failing dial need not emit a SYN, perform TLS, traverse Azure LB, or reach Kestrel." style="text;html=1;whiteSpace=wrap;align=left;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="72" width="1200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="app" value="k6 VU&lt;br&gt;Go HTTP client&lt;br&gt;fresh request" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="125" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="socket" value="Linux socket()&lt;br&gt;+ connect()" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="285" y="125" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="hash" value="Linux TCP&lt;br&gt;__inet_hash_connect&lt;br&gt;port scan" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="545" y="125" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="twtable" value="TCP conflict state&lt;br&gt;TIME_WAIT tuples&lt;br&gt;bind/connect tables" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="805" y="125" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="remote" value="AZURE LB → .NET&lt;br&gt;only if tuple&lt;br&gt;is eligible" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="125" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="al" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="135" y="190" as="sourcePoint" />
+            <mxPoint x="135" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="190" as="sourcePoint" />
+            <mxPoint x="380" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="190" as="sourcePoint" />
+            <mxPoint x="640" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="190" as="sourcePoint" />
+            <mxPoint x="900" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1145" y="190" as="sourcePoint" />
+            <mxPoint x="1145" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="connect" value="connect(10.0.2.4:8443); local candidate needs (10.0.1.4, port, 10.0.2.4, 8443)" style="endArrow=classic;html=1;fontSize=13;strokeColor=#6c8ebf;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="135" y="245" as="sourcePoint" />
+            <mxPoint x="380" y="245" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="select" value="choose ephemeral source port; test tuple eligibility" style="endArrow=classic;html=1;fontSize=13;strokeColor=#82b366;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="310" as="sourcePoint" />
+            <mxPoint x="640" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conflict" value="candidate conflicts with retained TIME_WAIT four-tuple" style="endArrow=classic;html=1;fontSize=13;strokeColor=#b85450;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="375" as="sourcePoint" />
+            <mxPoint x="900" y="375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="retry" value="repeat over every candidate in original 32768–60999 pool (28,232 ports)" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#b85450;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="440" as="sourcePoint" />
+            <mxPoint x="640" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fail" value="no eligible tuple: connect() returns -EADDRNOTAVAIL / errno 99" style="endArrow=classic;html=1;fontSize=13;strokeColor=#b85450;strokeWidth=3;fontColor=#a32925;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="505" as="sourcePoint" />
+            <mxPoint x="135" y="505" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nosyn" value="No SYN; no TLS handshake; no HTTP request; no Azure LB or server socket" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#b85450;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="570" as="sourcePoint" />
+            <mxPoint x="1145" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="states" value="PREDECESSOR CONNECTION STATE CHAIN&lt;br&gt;A prior successful .NET connection follows: ESTABLISHED → client FIN_WAIT_1 → server ACK → FIN_WAIT_2 → server FIN → client final ACK → TIME_WAIT. The retry that fails never reaches SYN_SENT because tuple allocation fails first." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;align=left;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="660" width="1200" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="evidence" value="MEASURED EXHAUSTION&lt;br&gt;07:02:13.343 UTC first EADDRNOTAVAIL completion; 07:02:14.221, 28,232 occupied source ports; 07:02:19.120, 28,232 TIME_WAIT sockets. The exact pool-sized population is strong aggregate evidence, not a state-transition capture for every socket.&lt;br&gt;&lt;br&gt;This was not a Kestrel descriptor leak: server descriptors returned to baseline." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;align=left;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="830" width="1200" height="135" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="blog-go" name="4 - Blog - Go conceptual lifecycle">
+    <mxGraphModel dx="2120" dy="2680" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="2680">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" value="Go: late TLS alert and client TCP reset" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#999999;fontSize=24;spacing=12;align=left;">
+          <mxGeometry x="40" y="20" width="2040" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" value="Same k6 client; fresh connections; Linux; HTTP/2 over TLS 1.2.&lt;br&gt;Conceptual sequence. Solid: protocol messages. Dashed: local or conditional steps." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="85" width="2040" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" value="CLIENT HTTP - L7&lt;br&gt;k6 / Go HTTP transport" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="35" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" value="CLIENT TLS&lt;br&gt;Go crypto/tls" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="335" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" value="CLIENT TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="635" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" value="L4 LOAD BALANCER&lt;br&gt;Forwards TCP; no TLS termination" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="935" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" value="SERVER TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1235" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" value="SERVER TLS&lt;br&gt;Go crypto/tls" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1535" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" value="SERVER HTTP - L7&lt;br&gt;Go net/http" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1835" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="280" as="sourcePoint" />
+            <mxPoint x="160" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="280" as="sourcePoint" />
+            <mxPoint x="460" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="280" as="sourcePoint" />
+            <mxPoint x="760" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="280" as="sourcePoint" />
+            <mxPoint x="1060" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="15" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="280" as="sourcePoint" />
+            <mxPoint x="1360" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="16" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="280" as="sourcePoint" />
+            <mxPoint x="1660" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="280" as="sourcePoint" />
+            <mxPoint x="1960" y="2420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" parent="1" value="Opens a TCP connection&lt;br&gt;socket() / connect()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="325" as="sourcePoint" />
+            <mxPoint x="760" y="325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" parent="1" value="TCP SYN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="395" as="sourcePoint" />
+            <mxPoint x="1360" y="395" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" parent="1" value="TCP SYN/ACK" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="465" as="sourcePoint" />
+            <mxPoint x="760" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" parent="1" value="TCP ACK - connection established" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="535" as="sourcePoint" />
+            <mxPoint x="1360" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" parent="1" value="TLS ClientHello" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="605" as="sourcePoint" />
+            <mxPoint x="1660" y="605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" parent="1" value="TLS ServerHello - TLS 1.2, ALPN h2" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="675" as="sourcePoint" />
+            <mxPoint x="460" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" parent="1" value="Certificate + ServerKeyExchange + ServerHelloDone" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="745" as="sourcePoint" />
+            <mxPoint x="460" y="745" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="25" parent="1" value="Verify certificate and signature" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="330" y="790" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="1" value="ClientKeyExchange + ChangeCipherSpec + Finished" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="885" as="sourcePoint" />
+            <mxPoint x="1660" y="885" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="27" parent="1" value="ChangeCipherSpec + Finished" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="955" as="sourcePoint" />
+            <mxPoint x="460" y="955" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="28" parent="1" value="HTTP/2 client preface + SETTINGS" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1025" as="sourcePoint" />
+            <mxPoint x="1960" y="1025" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="29" parent="1" value="HTTP/2 server SETTINGS" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1095" as="sourcePoint" />
+            <mxPoint x="160" y="1095" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" parent="1" value="HTTP/2 HEADERS - GET" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1165" as="sourcePoint" />
+            <mxPoint x="1960" y="1165" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="31" parent="1" value="HTTP/2 response HEADERS + DATA" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1235" as="sourcePoint" />
+            <mxPoint x="160" y="1235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="32" parent="1" value="No connection reuse: HTTP transport closes TLS&lt;br&gt;tls.Conn.Close()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1305" as="sourcePoint" />
+            <mxPoint x="460" y="1305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="33" parent="1" value="Writes the encrypted TLS shutdown alert&lt;br&gt;closeNotify()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1375" as="sourcePoint" />
+            <mxPoint x="760" y="1375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="34" parent="1" value="Client sends TLS close_notify&lt;br&gt;Signals closure of its TLS write direction" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1445" as="sourcePoint" />
+            <mxPoint x="1360" y="1445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="35" parent="1" value="Closes TCP without waiting for peer alert&lt;br&gt;net.Conn.Close()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1515" as="sourcePoint" />
+            <mxPoint x="760" y="1515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="36" parent="1" value="Client sends TCP FIN/ACK&lt;br&gt;Closes its sending direction" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1585" as="sourcePoint" />
+            <mxPoint x="1360" y="1585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="37" parent="1" value="Reads encrypted TLS bytes&lt;br&gt;net.Conn.Read()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1655" as="sourcePoint" />
+            <mxPoint x="1660" y="1655" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" parent="1" value="HTTP/2 cleanup begins&lt;br&gt;tls.Conn.Read() returns io.EOF" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1725" as="sourcePoint" />
+            <mxPoint x="1960" y="1725" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="39" parent="1" value="Go closes the server TLS connection&lt;br&gt;tls.Conn.Close()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1795" as="sourcePoint" />
+            <mxPoint x="1660" y="1795" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="40" parent="1" value="Writes the TLS alert, then closes TCP&lt;br&gt;closeNotify(), then net.Conn.Close()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1865" as="sourcePoint" />
+            <mxPoint x="1360" y="1865" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="41" parent="1" value="Server TLS close_notify + TCP ACK&lt;br&gt;ACK acknowledges the client FIN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1935" as="sourcePoint" />
+            <mxPoint x="760" y="1935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="42" parent="1" value="net.Conn.Close() closed the receive side&lt;br&gt;Linux rejects late TLS bytes with RST" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="1980" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="1" value="Client sends TCP RST&lt;br&gt;Aborts the connection" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#b85450;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2075" as="sourcePoint" />
+            <mxPoint x="1360" y="2075" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="44" parent="1" value="Server FIN/ACK arrives late&lt;br&gt;Its close crosses the client reset" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="2145" as="sourcePoint" />
+            <mxPoint x="760" y="2145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="45" parent="1" value="Client sends another RST&lt;br&gt;Rejects the late server FIN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#b85450;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2215" as="sourcePoint" />
+            <mxPoint x="1360" y="2215" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="46" parent="1" value="No normal client TIME_WAIT&lt;br&gt;on this reset path" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2260" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="1" value="Server accepts the reset&lt;br&gt;Closes its remaining TCP state" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="1230" y="2330" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="48" parent="1" value="WHY RST: the client has fully closed its socket. The server alert contains new TCP payload that the application can no longer receive. Linux sends RST; it does not interpret TLS close_notify.&lt;br&gt;WHY TIMING MATTERS: if the alert arrives before receive shutdown, TCP can accept it and close normally. Sending FIN alone only closes the write direction; it does not require a reset. Sources: tls-exhaustion-mechanism.md." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="2445" width="2040" height="205" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="blog-net" name="5 - Blog - NET conceptual lifecycle">
+    <mxGraphModel dx="2120" dy="2890" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="2890">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" value=".NET: quiet TLS disposal and client TIME_WAIT" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#999999;fontSize=24;spacing=12;align=left;">
+          <mxGeometry x="40" y="20" width="2040" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" value="Same k6 client; fresh connections; Linux; HTTP/2 over TLS 1.2.&lt;br&gt;Conceptual sequence. Solid: protocol messages. Dashed: local or conditional steps." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="85" width="2040" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" value="CLIENT HTTP - L7&lt;br&gt;k6 / Go HTTP transport" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="35" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" value="CLIENT TLS&lt;br&gt;Go crypto/tls" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="335" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" value="CLIENT TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="635" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" value="L4 LOAD BALANCER&lt;br&gt;Forwards TCP; no TLS termination" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="935" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" value="SERVER TCP - L4&lt;br&gt;Linux kernel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1235" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" value="SERVER TLS&lt;br&gt;SslStream / OpenSSL" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1535" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" value="SERVER HTTP - L7&lt;br&gt;Kestrel" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="1835" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="280" as="sourcePoint" />
+            <mxPoint x="160" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="280" as="sourcePoint" />
+            <mxPoint x="460" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="280" as="sourcePoint" />
+            <mxPoint x="760" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="280" as="sourcePoint" />
+            <mxPoint x="1060" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="15" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="280" as="sourcePoint" />
+            <mxPoint x="1360" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="16" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="280" as="sourcePoint" />
+            <mxPoint x="1660" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="280" as="sourcePoint" />
+            <mxPoint x="1960" y="2630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" parent="1" value="Opens a TCP connection&lt;br&gt;socket() / connect()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="325" as="sourcePoint" />
+            <mxPoint x="760" y="325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" parent="1" value="TCP SYN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="395" as="sourcePoint" />
+            <mxPoint x="1360" y="395" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" parent="1" value="TCP SYN/ACK" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="465" as="sourcePoint" />
+            <mxPoint x="760" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" parent="1" value="TCP ACK - connection established" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="535" as="sourcePoint" />
+            <mxPoint x="1360" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" parent="1" value="TLS ClientHello" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="605" as="sourcePoint" />
+            <mxPoint x="1660" y="605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" parent="1" value="TLS ServerHello - TLS 1.2, ALPN h2" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="675" as="sourcePoint" />
+            <mxPoint x="460" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" parent="1" value="Certificate + ServerKeyExchange + ServerHelloDone" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="745" as="sourcePoint" />
+            <mxPoint x="460" y="745" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="25" parent="1" value="Verify certificate and signature" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="330" y="790" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="1" value="ClientKeyExchange + ChangeCipherSpec + Finished" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="885" as="sourcePoint" />
+            <mxPoint x="1660" y="885" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="27" parent="1" value="ChangeCipherSpec + Finished" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="955" as="sourcePoint" />
+            <mxPoint x="460" y="955" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="28" parent="1" value="HTTP/2 client preface + SETTINGS" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1025" as="sourcePoint" />
+            <mxPoint x="1960" y="1025" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="29" parent="1" value="HTTP/2 server SETTINGS" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1095" as="sourcePoint" />
+            <mxPoint x="160" y="1095" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" parent="1" value="HTTP/2 HEADERS - GET" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1165" as="sourcePoint" />
+            <mxPoint x="1960" y="1165" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="31" parent="1" value="HTTP/2 response HEADERS + DATA" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#2d7600;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1235" as="sourcePoint" />
+            <mxPoint x="160" y="1235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="32" parent="1" value="No connection reuse: HTTP transport closes TLS&lt;br&gt;tls.Conn.Close()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="1305" as="sourcePoint" />
+            <mxPoint x="460" y="1305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="33" parent="1" value="Writes the encrypted TLS shutdown alert&lt;br&gt;closeNotify()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1375" as="sourcePoint" />
+            <mxPoint x="760" y="1375" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="34" parent="1" value="Client sends TLS close_notify&lt;br&gt;Signals closure of its TLS write direction" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#0066cc;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1445" as="sourcePoint" />
+            <mxPoint x="1360" y="1445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="35" parent="1" value="Closes TCP without waiting for peer alert&lt;br&gt;net.Conn.Close()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="1515" as="sourcePoint" />
+            <mxPoint x="760" y="1515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="36" parent="1" value="Client sends TCP FIN/ACK&lt;br&gt;Closes its sending direction" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1585" as="sourcePoint" />
+            <mxPoint x="1360" y="1585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="37" parent="1" value="SslStream reads from its transport&lt;br&gt;Receives encrypted TLS bytes" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1655" as="sourcePoint" />
+            <mxPoint x="1660" y="1655" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" parent="1" value="HTTP/2 cleanup begins&lt;br&gt;SslStream.ReadAsync() returns 0" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1725" as="sourcePoint" />
+            <mxPoint x="1960" y="1725" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="39" parent="1" value="Kestrel disposes the TLS stream&lt;br&gt;SslStream.DisposeAsync()" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1795" as="sourcePoint" />
+            <mxPoint x="1660" y="1795" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="40" parent="1" value="Quiet TLS disposal:&lt;br&gt;no reciprocal close_notify" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="1530" y="1840" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="1" value="Server closes TCP&lt;br&gt;Waits for its FIN to be acknowledged" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#9673a6;strokeWidth=2;dashed=1;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1935" as="sourcePoint" />
+            <mxPoint x="1360" y="1935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="42" parent="1" value="Server sends TCP FIN/ACK&lt;br&gt;No new TLS data before the FIN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="2005" as="sourcePoint" />
+            <mxPoint x="760" y="2005" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="43" parent="1" value="Client accepts the server FIN&lt;br&gt;Enters TIME_WAIT" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2050" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="44" parent="1" value="Client sends final TCP ACK&lt;br&gt;Acknowledges the server FIN" edge="1" style="endArrow=classic;html=1;fontSize=13;strokeColor=#666666;strokeWidth=2;dashed=0;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="2145" as="sourcePoint" />
+            <mxPoint x="1360" y="2145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="45" parent="1" value="Client keeps TIME_WAIT state&lt;br&gt;Retains the connection's IPs and ports" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2190" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="46" parent="1" value="Server receives the final ACK&lt;br&gt;Closes its TCP state" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="1230" y="2260" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="49" parent="1" value="Client TIME_WAIT timer expires&lt;br&gt;About 60 seconds in reference Linux" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2470" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="50" parent="1" value="Client releases the retained tuple&lt;br&gt;No packet is sent at expiry" vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#999999;fontSize=12;spacing=12;align=left;">
+          <mxGeometry x="630" y="2540" width="260" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="1" value="Ordinary Kestrel/OpenSSL disposal sends no reciprocal TLS alert in this path.&lt;br&gt;Normal client-first TCP close retains TIME_WAIT. Sources: tls-exhaustion-mechanism.md." vertex="1" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;">
+          <mxGeometry x="40" y="2655" width="2040" height="205" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="blog-net-goaway" name="6 - Blog - NET GOAWAY close race">
+    <mxGraphModel dx="2120" dy="1960" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="1960">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value=".NET alternative: HTTP/2 GOAWAY can race with an already-closed client" style="text;html=1;whiteSpace=wrap;align=left;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="2040" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="scope" value="Optional .NET HTTP/2 close path. The handshake and request completed before this excerpt. HTTP/2 GOAWAY is L7 control data, encrypted by TLS and carried as TCP payload; it is neither TLS close_notify nor TCP FIN. Dashed arrows are local operations." style="rounded=1;html=1;whiteSpace=wrap;align=left;spacing=12;fontSize=14;fillColor=#f5f5f5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="40" y="85" width="2040" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ch" value="CLIENT HTTP - L7&lt;br&gt;k6 / Go HTTP transport" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="35" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ct" value="CLIENT TLS&lt;br&gt;Go crypto/tls" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="335" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ck" value="CLIENT TCP - L4&lt;br&gt;Linux kernel" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="635" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lb" value="L4 LOAD BALANCER&lt;br&gt;No TLS termination" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#f5f5f5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="935" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sk" value="SERVER TCP - L4&lt;br&gt;Linux kernel" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1235" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="st" value="SERVER TLS&lt;br&gt;SslStream / OpenSSL" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1535" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sh" value="SERVER HTTP - L7&lt;br&gt;Kestrel HTTP/2" style="rounded=1;html=1;whiteSpace=wrap;fontSize=14;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1835" y="210" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="chl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="280" as="sourcePoint" />
+            <mxPoint x="160" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ctl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="280" as="sourcePoint" />
+            <mxPoint x="460" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ckl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="280" as="sourcePoint" />
+            <mxPoint x="760" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="280" as="sourcePoint" />
+            <mxPoint x="1060" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="skl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="280" as="sourcePoint" />
+            <mxPoint x="1360" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="stl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="280" as="sourcePoint" />
+            <mxPoint x="1660" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="shl" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="280" as="sourcePoint" />
+            <mxPoint x="1960" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="response" value="HTTP/2 response HEADERS + DATA: complete successful response (TLS/TCP carriage condensed)" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="340" as="sourcePoint" />
+            <mxPoint x="160" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="clientclose" value="HTTP transport closes the connection&lt;br&gt;tls.Conn.Close()" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#9673a6;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="420" as="sourcePoint" />
+            <mxPoint x="460" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="alertwrite" value="Writes the encrypted TLS alert&lt;br&gt;closeNotify()" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#9673a6;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="500" as="sourcePoint" />
+            <mxPoint x="760" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="alert" value="Client TLS close_notify carried as TCP payload" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="580" as="sourcePoint" />
+            <mxPoint x="1360" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="transportclose" value="Closes TCP without waiting for peer alert&lt;br&gt;net.Conn.Close()" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#9673a6;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="660" as="sourcePoint" />
+            <mxPoint x="760" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fin" value="Client FIN/ACK: FIN_WAIT_1; server receives FIN and enters CLOSE_WAIT" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="740" as="sourcePoint" />
+            <mxPoint x="1360" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="deliver" value="Deliver received TLS bytes&lt;br&gt;FIN separately ends TCP stream" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#9673a6;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="820" as="sourcePoint" />
+            <mxPoint x="1660" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eof" value="HTTP/2 cleanup begins&lt;br&gt;SslStream.ReadAsync() returns 0" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#9673a6;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="900" as="sourcePoint" />
+            <mxPoint x="1960" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="goaway" value="Conditional HTTP/2 cleanup:&lt;br&gt;write GOAWAY (e.g. NO_ERROR)&lt;br&gt;before TLS/transport disposal" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#d79b00;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="980" as="sourcePoint" />
+            <mxPoint x="1660" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="encrypt" value="Encrypt HTTP/2 GOAWAY bytes&lt;br&gt;as TLS application-data record(s)&lt;br&gt;write to TCP" style="endArrow=classic;html=1;fontSize=13;dashed=1;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1660" y="1060" as="sourcePoint" />
+            <mxPoint x="1360" y="1060" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wiregoaway" value="New server TCP payload containing encrypted GOAWAY&lt;br&gt;crosses L4 LB; kernel cannot interpret HTTP/2 or TLS" style="endArrow=classic;html=1;fontSize=14;strokeColor=#d79b00;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1140" as="sourcePoint" />
+            <mxPoint x="760" y="1140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="closedreceiver" value="ILLUSTRATED RACE:&lt;br&gt;receive side already closed.&lt;br&gt;New payload can take TCP reset path." style="rounded=1;html=1;whiteSpace=wrap;align=left;spacing=8;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="625" y="1190" width="270" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="nodelivery" value="The client TLS/HTTP layers do not process GOAWAY on this reset path. TCP reacts to late payload, not GOAWAY semantics." style="rounded=1;html=1;whiteSpace=wrap;align=left;spacing=10;fontSize=13;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="35" y="1190" width="550" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="rst" value="Client TCP RST: abort instead of completing normal FIN teardown" style="endArrow=classic;html=1;fontSize=14;strokeColor=#b85450;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="1320" as="sourcePoint" />
+            <mxPoint x="1360" y="1320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="clientend" value="Reset cleanup: no normal client&lt;br&gt;TIME_WAIT retention for this path.&lt;br&gt;Tuple eligibility follows kernel rules." style="rounded=1;html=1;whiteSpace=wrap;align=left;spacing=8;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="625" y="1380" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="serverend" value="Accepted RST aborts remaining TCP&lt;br&gt;state; CLOSED. No ACK of a RST.&lt;br&gt;Server TLS/HTTP cleanup completes." style="rounded=1;html=1;whiteSpace=wrap;align=left;spacing=8;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1225" y="1470" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="meaning" value="GOAWAY MAY PRECEDE DISPOSAL&lt;br&gt;Quiet TLS disposal concerns TLS close_notify. HTTP/2 cleanup can send GOAWAY first. NO_ERROR means no HTTP/2 protocol error; it says nothing about TCP teardown.&lt;br&gt;&lt;br&gt;OUTCOME DEPENDS ON TIMING&lt;br&gt;If the client can still receive, it can process GOAWAY. If not, late payload can lead to reset. Without extra output, page 5's normal-close path applies. Go also supports GOAWAY.&lt;br&gt;&lt;br&gt;Source references and limits: tls-exhaustion-mechanism.md." style="rounded=1;html=1;whiteSpace=wrap;align=left;spacing=12;fontSize=14;fillColor=#f5f5f5;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1640" width="2040" height="265" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="blog-comparison" name="7 - Blog - Shutdown difference and exhaustion">
+    <mxGraphModel dx="1400" dy="1300" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1400" pageHeight="1300">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Client source ports: reset versus TIME_WAIT" style="text;html=1;whiteSpace=wrap;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1320" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="scope" value="Same k6 client; fresh connections; Linux; HTTP/2 over TLS 1.2.&lt;br&gt;Two representative close paths. Timing can change the outcome." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;align=left;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="1320" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="CLIENT&lt;br&gt;HTTP/TLS + Linux TCP" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="220" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="GO SERVER&lt;br&gt;HTTP/2 + crypto/tls + Linux TCP" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="650" y="220" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l1" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="280" as="sourcePoint" />
+            <mxPoint x="220" y="635" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l2" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="280" as="sourcePoint" />
+            <mxPoint x="790" y="635" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="goresponse" value="HTTP/2 response" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="335" as="sourcePoint" />
+            <mxPoint x="220" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="goclientclose" value="TLS close_notify, then TCP FIN" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="405" as="sourcePoint" />
+            <mxPoint x="790" y="405" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="goalert" value="TLS close_notify + TCP ACK&lt;br&gt;ACK acknowledges the client FIN" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="475" as="sourcePoint" />
+            <mxPoint x="220" y="475" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gorst" value="TCP RST - late payload after client receive shutdown" style="endArrow=classic;html=1;fontSize=14;strokeColor=#b85450;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="545" as="sourcePoint" />
+            <mxPoint x="790" y="545" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="goresult" value="RESET PATH&lt;br&gt;No normal client TIME_WAIT." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;align=left;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="315" width="360" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="CLIENT&lt;br&gt;HTTP/TLS + Linux TCP" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="710" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value=".NET / KESTREL SERVER&lt;br&gt;HTTP/2 + SslStream + Linux TCP" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="650" y="710" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="770" as="sourcePoint" />
+            <mxPoint x="220" y="1125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l4" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="770" as="sourcePoint" />
+            <mxPoint x="790" y="1125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="netresponse" value="HTTP/2 response" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="825" as="sourcePoint" />
+            <mxPoint x="220" y="825" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="netclientclose" value="TLS close_notify, then TCP FIN" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="895" as="sourcePoint" />
+            <mxPoint x="790" y="895" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="netquiet" value="Quiet disposal: no server TLS close_notify&lt;br&gt;SslStream.DisposeAsync()" style="endArrow=classic;html=1;fontSize=14;dashed=1;strokeColor=#9673a6;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="965" as="sourcePoint" />
+            <mxPoint x="650" y="965" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="netfin" value="TCP FIN/ACK - no payload" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="1035" as="sourcePoint" />
+            <mxPoint x="220" y="1035" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="netack" value="Final TCP ACK; client retains TIME_WAIT" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="1105" as="sourcePoint" />
+            <mxPoint x="790" y="1105" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="netresult" value="NORMAL CLOSE PATH&lt;br&gt;TIME_WAIT retains client tuples.&lt;br&gt;&lt;br&gt;No eligible tuples left:&lt;br&gt;connect() fails with EADDRNOTAVAIL." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;align=left;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="805" width="360" height="260" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

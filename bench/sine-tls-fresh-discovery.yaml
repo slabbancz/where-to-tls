@@ -1,0 +1,27 @@
+runName: Sine TLS fresh discovery
+k6:
+  options:
+    quiet: false
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: true
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["1.1"]
+  tlsResumption: [false]
+  connectionReuse: [false]
+  profiles:
+    - name: sine
+      amplitude: 1500 
+      offset:  1500
+      cycles: 3
+      sampling: 30
+      windowSeconds: 180
+      preAllocatedVUs: 1000
+      maxVUs: 3000
+  warmupSeconds: 0
+  repeats: 1

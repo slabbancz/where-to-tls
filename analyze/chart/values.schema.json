@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["files", "imagePullSecrets", "credentials", "influxdb", "grafana", "importer", "scheduling", "persistence"],
+  "additionalProperties": false,
+  "properties": {
+    "nameOverride": {"type": "string"},
+    "fullnameOverride": {"type": "string"},
+    "files": {
+      "type": "object",
+      "required": ["influxdb", "dashboard", "liveDashboardJson", "comparisonDashboardJson", "comparisonAcrossProfilesDashboardJson", "comparisonRunTimelineDashboardJson", "comparisonRunTimelineAcrossProfileRunsDashboardJson", "runCatalogDashboardJson", "importerScript", "importerPython"],
+      "additionalProperties": false,
+      "properties": {
+        "influxdb": {"type": "string"},
+        "dashboard": {"type": "string"},
+        "liveDashboardJson": {"type": "string"},
+        "comparisonDashboardJson": {"type": "string"},
+        "comparisonAcrossProfilesDashboardJson": {"type": "string"},
+        "comparisonRunTimelineDashboardJson": {"type": "string"},
+        "comparisonRunTimelineAcrossProfileRunsDashboardJson": {"type": "string"},
+        "runCatalogDashboardJson": {"type": "string"},
+        "importerScript": {"type": "string"},
+        "importerPython": {"type": "string"}
+      }
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {"name": {"type": "string", "minLength": 1}}
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "required": ["existingSecret"],
+      "additionalProperties": false,
+      "properties": {"existingSecret": {"type": "string", "minLength": 1}}
+    },
+    "influxdb": {
+      "type": "object",
+      "required": ["image", "imagePullPolicy", "org", "bucket"],
+      "additionalProperties": false,
+      "properties": {
+        "image": {"type": "string", "minLength": 1},
+        "imagePullPolicy": {"type": "string", "enum": ["Always", "IfNotPresent", "Never"]},
+        "org": {"type": "string", "minLength": 1},
+        "bucket": {"type": "string", "minLength": 1}
+      }
+    },
+    "grafana": {
+      "type": "object",
+      "required": ["image", "imagePullPolicy", "queryTimeoutSeconds", "maxConnsPerHost", "renderer"],
+      "additionalProperties": false,
+      "properties": {
+        "image": {"type": "string", "minLength": 1},
+        "imagePullPolicy": {"type": "string", "enum": ["Always", "IfNotPresent", "Never"]},
+        "queryTimeoutSeconds": {"type": "integer", "minimum": 1},
+        "maxConnsPerHost": {"type": "integer", "minimum": 1},
+        "renderer": {
+          "type": "object",
+          "required": ["image", "imagePullPolicy"],
+          "additionalProperties": false,
+          "properties": {
+            "image": {"type": "string", "minLength": 1},
+            "imagePullPolicy": {"type": "string", "enum": ["Always", "IfNotPresent", "Never"]}
+          }
+        }
+      }
+    },
+    "importer": {
+      "type": "object",
+      "required": ["image", "imagePullPolicy", "skipWarmup", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "image": {"type": "string", "minLength": 1},
+        "imagePullPolicy": {"type": "string", "enum": ["Always", "IfNotPresent", "Never"]},
+        "skipWarmup": {"type": "boolean"},
+        "source": {
+          "type": "object",
+          "required": ["resultsDir", "artifacts"],
+          "additionalProperties": false,
+          "properties": {
+            "resultsDir": {"type": "string"},
+            "artifacts": {
+              "type": "array",
+              "items": {"type": "string", "minLength": 1}
+            }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "resultsDir": {"type": "string", "minLength": 1},
+                "artifacts": {"type": "array", "maxItems": 0}
+              }
+            },
+            {
+              "properties": {
+                "resultsDir": {"type": "string", "maxLength": 0},
+                "artifacts": {"type": "array", "minItems": 1}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "scheduling": {
+      "type": "object",
+      "required": ["nodeSelector", "tolerations"],
+      "additionalProperties": false,
+      "properties": {
+        "nodeSelector": {
+          "type": "object",
+          "required": ["wtt/pool"],
+          "additionalProperties": false,
+          "properties": {"wtt/pool": {"type": "string", "const": "cp"}}
+        },
+        "tolerations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "object"}
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["influxdbDataPath", "influxdbConfigPath", "grafanaDataPath"],
+      "additionalProperties": false,
+      "properties": {
+        "influxdbDataPath": {"type": "string", "minLength": 1},
+        "influxdbConfigPath": {"type": "string", "minLength": 1},
+        "grafanaDataPath": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

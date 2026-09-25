@@ -1,0 +1,32 @@
+#cloud-config
+package_update: true
+packages:
+  - openssh-server
+  - curl
+  - jq
+  - ca-certificates
+  - podman
+
+write_files:
+  - path: /opt/wtt/bootstrap/node/configure-linux-ssh.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(configure_ssh_script), "\n", "\n      ")}
+
+  - path: /etc/wtt/bootstrap.env
+    permissions: "0600"
+    content: |
+      AZURE_KEY_VAULT_NAME=${key_vault_name}
+
+  - path: /opt/wtt/bootstrap/cloud/get-identity-token.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_identity_token_script), "\n", "\n      ")}
+
+  - path: /opt/wtt/bootstrap/cloud/get-secret.sh
+    permissions: "0755"
+    content: |
+      ${replace(trimspace(get_secret_script), "\n", "\n      ")}
+
+runcmd:
+  - ["/opt/wtt/bootstrap/node/configure-linux-ssh.sh", "${admin_username}"]

@@ -1,0 +1,221 @@
+<mxfile host="app.diagrams.net" pages="3">
+  <diagram id="go-reset" name="1 - Go reciprocal alert and reset">
+    <mxGraphModel dx="1280" dy="1050" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Go: the reciprocal TLS alert is followed by a client TCP reset" style="text;html=1;whiteSpace=wrap;align=left;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="25" width="1200" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Observed Go client PCAP, stream 0, client port 35720. Frame numbers are capture-local; vertical spacing is not elapsed time." style="text;html=1;whiteSpace=wrap;align=left;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="75" width="1200" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="client" value="CLIENT VM - 10.0.1.4&lt;br&gt;k6 / Go TLS + Linux TCP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="130" width="300" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="server" value="SERVER VM - Go&lt;br&gt;Go TLS / HTTP + Linux TCP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="130" width="300" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="clife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="190" as="sourcePoint"/><mxPoint x="300" y="720" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="slife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="190" as="sourcePoint"/><mxPoint x="980" y="720" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lbnote" value="Azure L4 LB 10.0.2.4:8443 forwards to 10.0.2.5:8443; omitted here. It does not terminate TLS." style="text;html=1;whiteSpace=wrap;align=center;fontColor=#666666;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="205" width="1200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="setup" value="TCP + TLS 1.2 handshake; HTTP/2 request (condensed)" style="endArrow=classic;startArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="265" as="sourcePoint"/><mxPoint x="980" y="265" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="response" value="HTTP/2 response HEADERS + DATA - frames 210, 212" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="325" as="sourcePoint"/><mxPoint x="300" y="325" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="clientalert" value="TLS close_notify - frame 216 (31 TCP payload bytes)" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="385" as="sourcePoint"/><mxPoint x="980" y="385" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="clientfin" value="TCP FIN/ACK - frame 219" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="445" as="sourcePoint"/><mxPoint x="980" y="445" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="serveralert" value="Reciprocal TLS close_notify - frame 278 (31 bytes)" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="505" as="sourcePoint"/><mxPoint x="300" y="505" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="reset" value="Linux TCP RST - frame 279; 12 microseconds after alert" style="endArrow=classic;html=1;fontSize=14;strokeColor=#b85450;strokeWidth=3;fontColor=#a32925;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="565" as="sourcePoint"/><mxPoint x="980" y="565" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="serverfin" value="TCP FIN/ACK - frame 281" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="625" as="sourcePoint"/><mxPoint x="300" y="625" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="resetagain" value="Another TCP RST - frame 282" style="endArrow=classic;html=1;fontSize=14;strokeColor=#b85450;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="685" as="sourcePoint"/><mxPoint x="980" y="685" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="clientnote" value="INTERPRETATION&lt;br&gt;k6 does not retain the connection for reuse.&lt;br&gt;New server data after full local close can provoke a kernel reset, rather than normal client TIME-WAIT retention.&lt;br&gt;FIN alone does not prove a full application close." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="745" width="550" height="135" as="geometry"/>
+        </mxCell>
+        <mxCell id="proofnote" value="OBSERVED IN THIS STREAM&lt;br&gt;Frame 278 ACK = 2742232916&lt;br&gt;Frame 279 RST sequence = 2742232916&lt;br&gt;The RST is the next stream packet after the decoded alert.&lt;br&gt;The HTTP response had already completed." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="670" y="745" width="550" height="135" as="geometry"/>
+        </mxCell>
+        <mxCell id="totals" value="RUN TOTALS: 119,959 HTTP 200 responses; 0 failures. 119,534 connections (99.646%) have client RST and both TLS alerts.&lt;br&gt;Peak sampled client TIME-WAIT: 99; occupied ports: 153. Not every Go connection resets: exceptions are on page 3.&lt;br&gt;Evidence: Go packet-tls-shutdown-analysis/representative-full-stream-frames.tsv and per-connection.tsv." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="905" width="1160" height="95" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="net-normal" name="2 - NET normal close and exhaustion">
+    <mxGraphModel dx="1280" dy="1050" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value=".NET: normal client-first close accumulates client TIME-WAIT" style="text;html=1;whiteSpace=wrap;align=left;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="25" width="1200" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Observed .NET client PCAP, stream 1, client port 37758. Frame numbers are capture-local; vertical spacing is not elapsed time." style="text;html=1;whiteSpace=wrap;align=left;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="75" width="1200" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="client" value="CLIENT VM - 10.0.1.4&lt;br&gt;k6 / Go TLS + Linux TCP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="130" width="300" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="server" value="SERVER VM - .NET&lt;br&gt;Kestrel / SslStream + Linux TCP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="130" width="300" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="clife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="190" as="sourcePoint"/><mxPoint x="300" y="650" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="slife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="190" as="sourcePoint"/><mxPoint x="980" y="650" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lbnote" value="Same client and L4 LB path as Go. TLS is terminated by Kestrel, not by the load balancer." style="text;html=1;whiteSpace=wrap;align=center;fontColor=#666666;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="205" width="1200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="setup" value="TCP + TLS 1.2 handshake; HTTP/2 request (condensed)" style="endArrow=classic;startArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="265" as="sourcePoint"/><mxPoint x="980" y="265" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="response" value="HTTP/2 response HEADERS + DATA - frame 1241" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="325" as="sourcePoint"/><mxPoint x="300" y="325" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="clientalert" value="TLS close_notify - frame 1258 (31 TCP payload bytes)" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="385" as="sourcePoint"/><mxPoint x="980" y="385" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="clientfin" value="TCP FIN/ACK - frame 1260; ACK = 3374924439" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="445" as="sourcePoint"/><mxPoint x="980" y="445" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="noalert" value="No server TLS close_notify or GOAWAY in this stream&lt;br&gt;(decryption is working; HTTP/2 response decoded)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="400" y="470" width="490" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="serverfin" value="TCP FIN/ACK - frame 1738; SEQ = 3374924439; payload = 0" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="550" as="sourcePoint"/><mxPoint x="300" y="550" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="finalack" value="Final TCP ACK - frame 1739; ACK = 3374924440" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="300" y="610" as="sourcePoint"/><mxPoint x="980" y="610" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="clientstate" value="CLIENT KERNEL STATE&lt;br&gt;Expected normal active-close outcome: TIME-WAIT.&lt;br&gt;The application has closed; kernel tuple state persists.&lt;br&gt;Aggregate socket samples corroborate this population." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="670" width="550" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="serverstate" value="SERVER CLEANUP&lt;br&gt;Source-supported: ordinary Kestrel / SslStream disposal uses quiet TLS shutdown on Linux.&lt;br&gt;Not a captured call stack. No reciprocal alert on the wire.&lt;br&gt;Server descriptors return to baseline." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="670" y="670" width="550" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="exhaustion" value="SAME-RUN PROOF OF CLIENT EXHAUSTION&lt;br&gt;28,232 client-first, both-FIN, no-reset connections = peak 28,232 client TIME-WAIT sockets = configured source-port pool.&lt;br&gt;07:02:13.343 UTC: first EADDRNOTAVAIL. 07:02:14.221: all ports occupied. 07:02:19.120: all in TIME-WAIT.&lt;br&gt;Later dial failures are LOCAL: they need not send a SYN. This is not the server holding 28,232 application sockets open." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=15;spacing=14;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="800" width="1160" height="115" as="geometry"/>
+        </mxCell>
+        <mxCell id="footer" value="RUN TOTALS: 32,298 HTTP 200 responses; 11,487 local EADDRNOTAVAIL failures; 76,414 dropped iterations.&lt;br&gt;Not every .NET connection closes normally: GOAWAY/reset exceptions are on page 3.&lt;br&gt;Evidence and caveats: tls-exhaustion-go-vs-dotnet.md. The counts establish diagnosis, not a server-capacity ranking." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="935" width="1160" height="85" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="exceptions" name="3 - Exceptions and timing races">
+    <mxGraphModel dx="1280" dy="1050" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Exceptions: server output does not guarantee a reset" style="text;html=1;whiteSpace=wrap;align=left;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="25" width="1200" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Two actual client-PCAP streams. Same client software; packet ordering and receive state matter. Message spacing is schematic." style="text;html=1;whiteSpace=wrap;align=left;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="75" width="1200" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="lefttitle" value=".NET stream 0 - GOAWAY then reset" style="text;html=1;whiteSpace=wrap;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="580" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="righttitle" value="Go stream 110 - reciprocal alert, NO reset" style="text;html=1;whiteSpace=wrap;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="660" y="120" width="580" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="lc" value="k6 + Linux&lt;br&gt;client :37744" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="65" y="170" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ls" value=".NET / Kestrel&lt;br&gt;server" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="445" y="170" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="rc" value="k6 + Linux&lt;br&gt;client :36708" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="685" y="170" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="rs" value="Go TLS / HTTP&lt;br&gt;server" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1065" y="170" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="lclife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="140" y="220" as="sourcePoint"/><mxPoint x="140" y="710" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lslife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="220" as="sourcePoint"/><mxPoint x="520" y="710" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rclife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="760" y="220" as="sourcePoint"/><mxPoint x="760" y="640" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rslife" style="endArrow=none;dashed=1;strokeColor=#777777;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1140" y="220" as="sourcePoint"/><mxPoint x="1140" y="640" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lresponse" value="HTTP/2 response - 990" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="265" as="sourcePoint"/><mxPoint x="140" y="265" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lalert" value="TLS close_notify - 1008" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="140" y="330" as="sourcePoint"/><mxPoint x="520" y="330" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lfin" value="TCP FIN/ACK - 1009" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="140" y="395" as="sourcePoint"/><mxPoint x="520" y="395" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lfinrepeat" value="Repeated TCP FIN - 1283" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="140" y="460" as="sourcePoint"/><mxPoint x="520" y="460" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lack" value="TCP ACK of client FIN - 1287" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="525" as="sourcePoint"/><mxPoint x="140" y="525" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lgoaway" value="HTTP/2 GOAWAY - 1319&lt;br&gt;NO_ERROR, last stream 1; 46 bytes" style="endArrow=classic;html=1;fontSize=14;strokeColor=#d79b00;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="590" as="sourcePoint"/><mxPoint x="140" y="590" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="lrst" value="TCP RST - 1320&lt;br&gt;5 microseconds after GOAWAY" style="endArrow=classic;html=1;fontSize=14;strokeColor=#b85450;strokeWidth=3;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="140" y="655" as="sourcePoint"/><mxPoint x="520" y="655" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rresponse" value="HTTP/2 response - 2863, 2864" style="endArrow=classic;html=1;fontSize=14;strokeColor=#2d7600;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1140" y="265" as="sourcePoint"/><mxPoint x="760" y="265" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="ralert" value="TLS close_notify - 2869" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="760" y="330" as="sourcePoint"/><mxPoint x="1140" y="330" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rserveralert" value="Reciprocal TLS close_notify - 2871" style="endArrow=classic;html=1;fontSize=14;strokeColor=#0066cc;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1140" y="395" as="sourcePoint"/><mxPoint x="760" y="395" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rserverfin" value="SERVER TCP FIN - 2872" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1140" y="460" as="sourcePoint"/><mxPoint x="760" y="460" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rclientfin" value="CLIENT TCP FIN/ACK - 2877&lt;br&gt;acknowledges server alert and FIN" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;strokeWidth=2;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="760" y="525" as="sourcePoint"/><mxPoint x="1140" y="525" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rfinalack" value="Server final TCP ACK - 2881" style="endArrow=classic;html=1;fontSize=14;strokeColor=#666666;labelBackgroundColor=#ffffff;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1140" y="590" as="sourcePoint"/><mxPoint x="760" y="590" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="rinterpretation" value="The peer's alert and FIN arrive before client FIN.&lt;br&gt;Consistent with a different close race; no RST.&lt;br&gt;Packets do not timestamp the application's close syscall." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;spacing=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="670" y="650" width="550" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="leftcounts" value=".NET: 4,067 GOAWAY connections.&lt;br&gt;4,051 have client reset; 16 have both FINs without reset.&lt;br&gt;GOAWAY is HTTP/2 application data, NOT a TLS alert.&lt;br&gt;One additional reset connection has an incomplete handshake." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="750" width="550" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="rightcounts" value="Go: 425 both-FIN/no-reset connections.&lt;br&gt;327 server-FIN-first; 98 client-FIN-first.&lt;br&gt;332 contain both TLS alerts; 93 only the client alert.&lt;br&gt;Normal close count is NOT client TIME-WAIT occupancy." style="rounded=1;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="670" y="750" width="550" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="caveats" value="READING THE DIAGRAMS&lt;br&gt;Blue = decoded TLS alerts; green = HTTP/2 response; orange = HTTP/2 GOAWAY; red = TCP reset; gray = TCP control.&lt;br&gt;Arrows are observed packet messages, except explicitly condensed setup. Yellow boxes are interpretation, not syscall traces.&lt;br&gt;Counts use client captures (zero reported kernel drops). Go server capture has 100,590 drops and is not used for totals.&lt;br&gt;Full proof, paths, SHA-256 fingerprints, and limitations: tls-exhaustion-go-vs-dotnet.md. No TLS session keys are embedded." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;spacing=14;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="885" width="1160" height="130" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

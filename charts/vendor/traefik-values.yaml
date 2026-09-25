@@ -1,0 +1,74 @@
+# traefik-values.yaml — Traefik configuration for s5-* and s6-* benchmark scenarios.
+# Traefik listens on 8443 (websecure) and 8080 (web) matching CONTRACT §2.
+ports:
+  traefik:
+    port: 9000
+    expose:
+      default: false
+  web:
+    port: 8080
+    expose:
+      default: true
+    exposedPort: 8080
+    nodePort: 30080
+    protocol: TCP
+  websecure:
+    port: 8443
+    expose:
+      default: true
+    exposedPort: 8443
+    nodePort: 30443
+
+    protocol: TCP
+    http:
+      tls:
+        enabled: false # Handled via Gateway API per scenario
+
+service:
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+
+# Traefik runs on dedicated VMSS node pool (Contract §1a)
+deployment:
+  replicas: 3
+
+# Release old pods' CPU reservations before scheduling their replacements.
+updateStrategy:
+  type: Recreate
+
+nodeSelector:
+  wtt/pool: "traefik"
+
+# Resource requests (no limits, per §1a)
+resources:
+  requests:
+    cpu: "1200m"
+    memory: "1500Mi"
+
+podSecurityContext:
+  sysctls:
+    - name: net.ipv4.ip_local_port_range
+      value: "10000 65535"
+
+# Gateway API provider configuration (Contract §4)
+# Traefik v3.7.13 watches v1 TLSRoute without the deprecated TCPRoute watcher.
+providers:
+  kubernetesGateway:
+    enabled: true
+    experimentalChannel: false
+
+# Disable Traefik's built-in default Gateway;
+gateway:
+  enabled: false
+
+ingressRoute:
+  dashboard:
+    enabled: false
+
+# Avoid access logging on request path to eliminate disk I/O latency contamination
+log:
+  level: "ERROR"
+
+accessLog:
+  enabled: false

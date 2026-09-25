@@ -1,0 +1,53 @@
+# Optional deployment assertion, not a client pin or an in-run matrix axis:
+# tlsGroup: P-256 # P-256 | X25519; omit to use the deployed group
+runName: Benchmark template
+k6:
+  options:
+    quiet: false # Hide k6 progress output: true | false
+    verbose: false # Enable k6 diagnostic logging: true | false
+    summaryMode: full # Console summary detail: compact | full | disabled
+  dashboard:
+    enabled: true # Save k6 HTML/NDJSON dashboard artifacts: true | false
+    intervalSeconds: 1 # Dashboard sampling interval in positive seconds
+matrix:
+  endpoints:
+    - path: /ping # Endpoint to request: /ping | /payload
+    - path: /payload # Payload endpoint: /ping | /payload
+      payloadBytes: 1024 # Response size in bytes; positive integer for /payload
+  httpVersions: ["2", "1.1"] # HTTP protocol versions to test: "2" | "1.1"
+  tlsResumption: [false, true] # Requested TLS resumption mode: true | false
+  connectionReuse: [true, false] # Reuse HTTP connections: true | false; false opens a new TLS connection per request
+  profiles:
+    - name: flat # Constant arrival rate profile: flat | sine
+      rate: 2000 # Constant offered requests/sec; positive, required for flat
+      windowSeconds: 60 # Constant-load measurement window in positive seconds
+      preAllocatedVUs: 200 # VUs reserved before start; positive integer
+      maxVUs: 200 # Optional ceiling; integer >= preAllocatedVUs, defaults to it
+    - name: sine # Sine arrival-rate profile: sine
+      amplitude: 1000 # Half of the peak-to-trough RPS range; positive number
+      offset: 1000 # Vertical RPS offset; use amplitude for a 0 → peak curve
+      cycles: 1 # Complete sine waves over windowSeconds; positive number
+      sampling: 40 # Piecewise k6 stages sampling the curve over time; integer >= 2
+      windowSeconds: 120 # Full sine-curve duration in positive seconds
+      preAllocatedVUs: 200 # VUs reserved before start; positive integer
+      maxVUs: 200 # Optional ceiling; integer >= preAllocatedVUs, defaults to it
+    - name: linear # Linear arrival-rate profile: linear
+      start: 1 # Initial offered requests/sec; positive number
+      end: 2000 # Final offered requests/sec; positive number
+      sampling: 40 # Piecewise k6 stages sampling the curve over time; integer >= 2
+      windowSeconds: 120 # Linear-ramp duration in positive seconds
+      preAllocatedVUs: 200 # VUs reserved before start; positive integer
+      maxVUs: 200 # Optional ceiling; integer >= preAllocatedVUs, defaults to it
+    - name: exponential # Exponential arrival-rate profile: exponential
+      start: 20 # Initial offered requests/sec; positive number
+      end: 2000 # Final offered requests/sec; positive number
+      sampling: 40 # Piecewise k6 stages sampling the curve over time; integer >= 2
+      windowSeconds: 120 # Exponential-ramp duration in positive seconds
+      preAllocatedVUs: 200 # VUs reserved before start; positive integer
+      maxVUs: 200 # Optional ceiling; integer >= preAllocatedVUs, defaults to it
+    - name: race # Fixed-concurrency completion race; does not use an arrival rate or maxVUs
+      iterations: 1000000 # Exact total requests shared among all VUs
+      vus: 1000 # Fixed concurrent VUs; do not use dynamic VU allocation
+      maxDurationSeconds: 900 # Safety ceiling; incomplete runs are not finish-time ranked
+  warmupSeconds: 10 # Pre-measurement load duration; zero or more seconds
+  repeats: 3 # Measured runs per cell; each repeat runs all profiles in listed order

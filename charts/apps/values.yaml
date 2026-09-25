@@ -1,0 +1,96 @@
+global:
+  image:
+    registry: registry.invalid
+    tag: "0000000"
+    pullPolicy: Always
+
+routing:
+  mode: direct
+  gatewayClass: ""
+  listenerPort: 8443
+  backendPort: 8443
+  certificateSecretName: ""
+  tlsVersion: "1.2"
+  tlsGroup: P-256
+  backendTLS:
+    enabled: true
+    caConfigMapName: wtt-ca
+
+workloadDefaults: &workloadDefaults
+  enabled: false
+  startupProbe:
+    enabled: true
+  # Both liveness and readiness probes are disabled, so during peak loads the pods are not restarted prematurely.
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  labels: &workloadLabels
+    scenario: unset
+    tls: none
+  imagePullSecrets:
+    - name: acr-pull-secret
+  config:
+    plaintextPort: 8080
+    tls:
+      enabled: false
+      port: 8443
+      version: "1.2"
+      group: P-256
+      provider: boringssl
+      resumption: false
+    payload:
+      preallocate: true
+    timeouts:
+      tlsHandshakeSeconds: 5
+      httpRequestSeconds: 10
+  tls:
+    secretName: wtt-tls-secret
+    mountPath: /etc/wtt/tls
+    certFile: /etc/wtt/tls/tls.crt
+    keyFile: /etc/wtt/tls/tls.key
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    tlsPort: 8443
+    plainPort: 8080
+  scheduling:
+    nodeSelector:
+      wtt/pool: workload
+  resources:
+    requests:
+      cpu: 3500m
+      memory: 2096Mi
+
+workload-go:
+  <<: *workloadDefaults
+  labels:
+    <<: *workloadLabels
+    stack: go
+  image:
+    repository: wtt/go-server
+
+workload-net:
+  <<: *workloadDefaults
+  labels:
+    <<: *workloadLabels
+    stack: net10
+  image:
+    repository: wtt/net10-server
+
+workload-java:
+  <<: *workloadDefaults
+  labels:
+    <<: *workloadLabels
+    stack: java-netty
+  image:
+    repository: wtt/java-netty-server
+
+workload-rust:
+  <<: *workloadDefaults
+  labels:
+    <<: *workloadLabels
+    stack: rust
+  image:
+    repository: wtt/rust-server

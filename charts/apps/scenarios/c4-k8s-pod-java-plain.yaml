@@ -1,0 +1,10 @@
+routing:
+  backendPort: 8080
+workload-go:
+  enabled: false
+workload-net:
+  enabled: false
+workload-java:
+  enabled: true
+  labels:
+    scenario: c4-k8s-pod-java-plain

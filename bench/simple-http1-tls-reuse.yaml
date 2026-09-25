@@ -1,0 +1,46 @@
+runName: HTTP1 TLS connection reuse
+k6:
+  options:
+    quiet: false
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: true
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["1.1"]
+  tlsResumption: [true]
+  connectionReuse: [true] # Measure a full TLS handshake for each HTTP request.
+  profiles:
+    - name: flat
+      rate: 2000
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 1000
+    - name: sine
+      amplitude: 2450 # 100 - 5000 RPS
+      offset:  2550
+      cycles: 2
+      sampling: 100
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 1000
+    - name: linear
+      start: 100
+      end: 5000
+      sampling: 100
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 1000
+    - name: exponential
+      start: 100
+      end: 5000
+      sampling: 100
+      windowSeconds: 60
+      preAllocatedVUs: 200
+      maxVUs: 1000
+  warmupSeconds: 5
+  repeats: 1

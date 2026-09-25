@@ -1,0 +1,15 @@
+routing:
+  mode: passthrough
+  gatewayClass: traefik
+workload-go:
+  enabled: true
+  labels:
+    scenario: s5-traefik-passthrough-go
+    tls: pod
+  config:
+    tls:
+      enabled: true
+  service:
+    type: ClusterIP
+workload-net:
+  enabled: false

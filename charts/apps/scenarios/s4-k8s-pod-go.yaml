@@ -1,0 +1,10 @@
+workload-go:
+  enabled: true
+  labels:
+    scenario: s4-k8s-pod-go
+    tls: pod
+  config:
+    tls:
+      enabled: true
+workload-net:
+  enabled: false

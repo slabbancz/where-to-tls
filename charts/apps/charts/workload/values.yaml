@@ -1,0 +1,51 @@
+enabled: false
+startupProbe:
+  enabled: true
+livenessProbe:
+  enabled: true
+readinessProbe:
+  enabled: true
+global:
+  image:
+    registry: registry.invalid
+    tag: "0000000"
+    pullPolicy: Always
+labels:
+  scenario: unset
+  stack: go
+  tls: none
+image:
+  repository: wtt/server
+imagePullSecrets:
+  - name: acr-pull-secret
+config:
+  plaintextPort: 8080
+  tls:
+    enabled: false
+    port: 8443
+    version: "1.2"
+    group: P-256
+    provider: boringssl
+    resumption: false
+  payload:
+    preallocate: true
+  timeouts:
+    tlsHandshakeSeconds: 5
+    httpRequestSeconds: 10
+tls:
+  secretName: wtt-tls-secret
+  mountPath: /etc/wtt/tls
+  certFile: /etc/wtt/tls/tls.crt
+  keyFile: /etc/wtt/tls/tls.key
+service:
+  type: ClusterIP
+  annotations: {}
+  tlsPort: 8443
+  plainPort: 8080
+scheduling:
+  nodeSelector:
+    wtt/pool: workload
+resources:
+  requests:
+    cpu: 1500m
+    memory: 512Mi

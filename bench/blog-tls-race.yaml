@@ -1,0 +1,31 @@
+runName: Blog TLS race
+k6:
+  options:
+    quiet: true
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: false
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["1.1"]
+  tlsResumption: [false]
+  connectionReuse: [false]
+  profiles:
+    - name: race
+      iterations: 100000
+      vus: 10
+      maxDurationSeconds: 90
+    - name: race
+      iterations: 100000
+      vus: 100
+      maxDurationSeconds: 90
+    - name: race
+      iterations: 100000
+      vus: 1000
+      maxDurationSeconds: 90
+  warmupSeconds: 0
+  repeats: 3

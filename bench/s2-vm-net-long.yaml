@@ -1,0 +1,27 @@
+runName: NET VM long run
+k6:
+  options:
+    quiet: false
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: true
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /ping
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["2", "1.1"]
+  tlsResumption: [false, true]
+  profiles:
+    - {name: flat, rate: 2000, windowSeconds: 60, preAllocatedVUs: 200}
+    - {name: flat, rate: 4000, windowSeconds: 60, preAllocatedVUs: 400}
+    - {name: flat, rate: 8000, windowSeconds: 60, preAllocatedVUs: 800}
+    - {name: flat, rate: 16000, windowSeconds: 60, preAllocatedVUs: 1600}
+    - {name: sine, peakRate: 2000, windowSeconds: 120, preAllocatedVUs: 200}
+    - {name: sine, peakRate: 4000, windowSeconds: 120, preAllocatedVUs: 400}
+    - {name: sine, peakRate: 8000, windowSeconds: 120, preAllocatedVUs: 800}
+    - {name: sine, peakRate: 16000, windowSeconds: 120, preAllocatedVUs: 1600}
+  warmupSeconds: 10
+  repeats: 3

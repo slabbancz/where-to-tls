@@ -1,0 +1,33 @@
+runName: Blog TLS linear peak
+k6:
+  options:
+    quiet: true
+    verbose: false
+    summaryMode: full
+  dashboard:
+    enabled: false
+    intervalSeconds: 5
+matrix:
+  endpoints:
+    - path: /payload
+      payloadBytes: 1024
+  httpVersions: ["1.1"]
+  tlsResumption: [false]
+  connectionReuse: [false]
+  profiles:
+    - name: linear
+      start: 100
+      end: 6000
+      sampling: 10
+      windowSeconds: 90
+      preAllocatedVUs: 100
+      maxVUs: 100
+    - name: linear
+      start: 100
+      end: 6000
+      sampling: 10
+      windowSeconds: 90
+      preAllocatedVUs: 100
+      maxVUs: 1000
+  warmupSeconds: 0
+  repeats: 3

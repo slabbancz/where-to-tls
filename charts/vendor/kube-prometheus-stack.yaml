@@ -1,0 +1,103 @@
+# Minimal offline kube-prometheus-stack configuration for benchmark telemetry.
+# It retains only Prometheus, Grafana, node-exporter, and kubelet cAdvisor
+# container metrics. Prometheus Operator remains enabled solely to manage the
+# Prometheus instance and ServiceMonitors.
+
+defaultRules:
+  create: true
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+  adminUser: admin
+  adminPassword: adminadmin
+  defaultDashboardsEnabled: true
+  additionalDataSources:
+    - name: Pyroscope
+      uid: pyroscope
+      type: grafana-pyroscope-datasource
+      access: proxy
+      url: http://wtt-pyroscope:4040
+      isDefault: false
+      editable: false
+      jsonData:
+        minStep: 15s
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+prometheus:
+  enabled: true
+  serviceMonitor:
+    selfMonitor: false
+  prometheusSpec:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+
+prometheusOperator:
+  enabled: true
+  tls:
+    enabled: false
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  admissionWebhooks:
+    enabled: false
+  serviceMonitor:
+    selfMonitor: false
+
+nodeExporterEnabled: &nodeExporterEnabled true
+nodeExporter:
+  enabled: *nodeExporterEnabled
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      enabled: *nodeExporterEnabled
+      
+kubeStateMetrics:
+  enabled: true
+
+kubelet:
+  enabled: true
+  serviceMonitor:
+    kubelet: false
+    probes: false
+    resource: false
+    cAdvisor: true
+
+coreDns:
+  enabled: false
+
+kubeApiServer:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeDns:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+windowsMonitoring:
+  enabled: false

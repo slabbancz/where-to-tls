@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "analyze.fullname" . }}-settings
+  labels:
+{{ include "analyze.labels" . | nindent 4 }}
+data:
+  INFLUX_URL: "http://127.0.0.1:8086"
+  INFLUX_ORG: {{ .Values.influxdb.org | quote }}
+  INFLUX_BUCKET: {{ .Values.influxdb.bucket | quote }}
+  TMPDIR: "/workspace"
+  DOCKER_INFLUXDB_INIT_MODE: "setup"
+  DOCKER_INFLUXDB_INIT_ORG: {{ .Values.influxdb.org | quote }}
+  DOCKER_INFLUXDB_INIT_BUCKET: {{ .Values.influxdb.bucket | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "analyze.fullname" . }}-grafana-datasource
+  labels:
+{{ include "analyze.labels" . | nindent 4 }}
+data:
+  influxdb.yaml: |-
+{{ .Values.files.influxdb | replace "http://influxdb:8086" "http://127.0.0.1:8086" | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "analyze.fullname" . }}-grafana-dashboard-provider
+  labels:
+{{ include "analyze.labels" . | nindent 4 }}
+data:
+  dashboard.yaml: |-
+{{ .Values.files.dashboard | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "analyze.fullname" . }}-grafana-dashboard
+  labels:
+{{ include "analyze.labels" . | nindent 4 }}
+data:
+  k6-live.json: |-
+{{ .Values.files.liveDashboardJson | nindent 4 }}
+  k6-comparison.json: |-
+{{ .Values.files.comparisonDashboardJson | nindent 4 }}
+  k6-comparison-across-profiles.json: |-
+{{ .Values.files.comparisonAcrossProfilesDashboardJson | nindent 4 }}
+  k6-comparison-run-timeline.json: |-
+{{ .Values.files.comparisonRunTimelineDashboardJson | nindent 4 }}
+  k6-comparison-run-timeline-across-profile-runs.json: |-
+{{ .Values.files.comparisonRunTimelineAcrossProfileRunsDashboardJson | nindent 4 }}
+  k6-run-catalog.json: |-
+{{ .Values.files.runCatalogDashboardJson | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "analyze.fullname" . }}-importer
+  labels:
+{{ include "analyze.labels" . | nindent 4 }}
+data:
+  import-results.sh: |-
+{{ .Values.files.importerScript | nindent 4 }}
+  import-results.py: |-
+{{ .Values.files.importerPython | nindent 4 }}

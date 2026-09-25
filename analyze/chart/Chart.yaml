@@ -1,0 +1,7 @@
+apiVersion: v2
+name: analyze
+description: Where-To-TLS InfluxDB and Grafana analysis stack
+type: application
+version: 0.1.0
+appVersion: "2.9.1"
+kubeVersion: ">=1.33.0-0"
