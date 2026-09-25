@@ -10,7 +10,6 @@ The same server implementations (.NET, Java, Go, Rust, and Windows IIS) are plac
 
 All tests originate from a dedicated client load-generator VMSS (`Standard_D8s_v7`) across an Azure private network:
 
-```
 | Topology ID | Name | Termination Point | Data Path |
 | --- | --- | --- | --- |
 | `s1-iis-netfx` | Windows IIS | Host IIS | Azure LB → Windows VMSS → IIS (.NET Framework 4.8) |
@@ -19,6 +18,7 @@ All tests originate from a dedicated client load-generator VMSS (`Standard_D8s_v
 | `s5-traefik-passthrough-<stack>` | Traefik Passthrough | Application Pod | Azure LB → Gateway API (Traefik L4 SNI Passthrough) → Pod |
 | `s6-traefik-terminate-<stack>` | Traefik Termination | Traefik Ingress | Azure LB → Gateway API (Traefik TLS Termination) → Upstream TLS → Pod |
 | `c0-*`, `c2-*`, `c4-*` | Plaintext Controls | Application / Service | Basic infra/debug tooling scenarios  |
+
 ---
 
 ## Workload Profiles & Parameters
